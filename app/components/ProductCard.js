@@ -40,17 +40,22 @@ export default function ProductCard({ product }) {
         
         <div className="product-price-row mt-1">
           <span className="product-price">₹{product.price}</span>
-          <span className="product-original-price">₹{product.originalPrice}</span>
+          <span className="product-original-price">₹{product.originalPrice || product.price + 100}</span>
         </div>
         
-        <span className="product-offer">{product.discount}% off</span>
+        {(() => {
+          const discount = product.discount || (product.originalPrice > product.price ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 20);
+          return (
+            <span className="inline-block px-1.5 py-0.5 bg-purple-50 text-meesho-purple rounded text-[11px] font-bold tracking-wide mt-1">{discount}% off</span>
+          );
+        })()}
         
         <div className="flex items-center text-xs text-gray-500 mt-1">
           <span className="bg-gray-100 px-1.5 py-0.5 rounded mr-2 font-medium">Free Delivery</span>
         </div>
         
-        <div className="product-rating-row">
-          <div className="rating-badge">
+        <div className="flex items-center gap-2 mt-2 pt-1">
+          <div className="flex items-center justify-center gap-0.5 bg-meesho-purple text-white px-2 py-0.5 rounded-full text-[11px] font-bold shadow-sm">
             <span>{product.rating}</span>
             <StarIcon filled className="w-3 h-3" />
           </div>

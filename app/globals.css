@@ -122,7 +122,7 @@
   }
 
   .product-offer {
-    @apply inline-block px-1.5 py-0.5 bg-green-50 text-meesho-green rounded text-[11px] font-bold tracking-wide;
+    @apply inline-block px-1.5 py-0.5 bg-purple-50 text-meesho-purple rounded text-[11px] font-bold tracking-wide mt-1;
   }
 
   .product-rating-row {
@@ -130,7 +130,7 @@
   }
 
   .rating-badge {
-    @apply flex items-center gap-1 px-2 py-0.5 bg-meesho-green text-white rounded-full text-[12px] font-bold shadow-sm;
+    @apply flex items-center justify-center gap-0.5 bg-meesho-purple text-white px-2 py-0.5 rounded-full text-[11px] font-bold shadow-sm;
   }
 
   /* Buttons */

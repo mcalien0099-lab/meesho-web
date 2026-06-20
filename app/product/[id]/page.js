@@ -148,11 +148,16 @@ export default function ProductPage() {
               </h1>
               <div className="flex items-baseline gap-3 mb-4">
                 <span className="text-3xl font-black text-gray-900">₹{product.price}</span>
-                <span className="text-base text-gray-400 line-through">₹{product.originalPrice}</span>
-                <span className="text-sm font-bold text-meesho-green bg-green-50 px-2 py-1 rounded-md border border-green-100">{product.discount}% off</span>
+                <span className="text-base text-gray-400 line-through">₹{product.originalPrice || product.price + 100}</span>
+                {(() => {
+                  const discount = product.discount || (product.originalPrice > product.price ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 20);
+                  return (
+                    <span className="text-sm font-bold text-meesho-purple bg-purple-50 px-2 py-1 rounded-md border border-meesho-purple/20">{discount}% off</span>
+                  );
+                })()}
               </div>
               <div className="flex items-center gap-3">
-                <div className="bg-meesho-green text-white px-2.5 py-1 rounded-full flex items-center gap-1 text-sm font-bold shadow-sm">
+                <div className="bg-meesho-purple text-white px-2.5 py-1 rounded-full flex items-center gap-1 text-sm font-bold shadow-sm">
                   {product.rating} <StarIcon filled className="w-4 h-4" />
                 </div>
                 <span className="text-sm font-medium text-gray-500">{product.reviewsCount || product.reviews} Ratings</span>
@@ -244,7 +249,7 @@ export default function ProductPage() {
                     <div key={review._id || review.id} className="py-5">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-[13px] font-bold text-gray-800">{review.name || review.userName || "Anonymous"}</span>
-                        <div className="flex items-center gap-1 bg-meesho-green text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
+                        <div className="flex items-center gap-1 bg-meesho-purple text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
                           {review.rating} <StarIcon filled className="w-2.5 h-2.5" />
                         </div>
                       </div>
