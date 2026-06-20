@@ -5,12 +5,12 @@ import { ChevronRight } from "./Icons";
 
 export default function AccountSection() {
   const menuItems = [
-    { id: 1, title: "My Orders", icon: "📦", type: "list" },
-    { id: 2, title: "My Bank & UPI Details", icon: "🏦", type: "form" },
-    { id: 3, title: "My Shared Products", icon: "↗️", type: "list" },
-    { id: 4, title: "My Payments", icon: "💳", type: "list" },
-    { id: 5, title: "Meesho Community", icon: "👥", type: "info" },
-    { id: 6, title: "Settings", icon: "⚙️", type: "settings" },
+    { id: 1, title: "My Orders", icon: "🛍️", type: "list" },
+    { id: 2, title: "Meesho Payments & UPI", icon: "💳", type: "payments" },
+    { id: 3, title: "My Saved Addresses", icon: "📍", type: "list" },
+    { id: 4, title: "Shared Bank Details", icon: "🏦", type: "form" },
+    { id: 5, title: "Settings & Permissions", icon: "⚙️", type: "settings" },
+    { id: 6, title: "Logout", icon: "🚪", type: "logout" },
   ];
 
   const [activeModal, setActiveModal] = useState(null);
@@ -19,24 +19,16 @@ export default function AccountSection() {
     <div className="flex-1 w-full max-w-3xl mx-auto py-6">
       <div className="bg-white md:rounded-2xl md:shadow-sm md:border border-gray-200 p-4 md:p-8">
         
-        {/* Profile Card */}
-        <div className="bg-gradient-to-br from-meesho-purple to-meesho-pink rounded-xl p-6 flex items-center gap-6 text-white shadow-md mb-8 relative overflow-hidden">
-          {/* Decorative circles */}
-          <div className="absolute -right-10 -top-10 w-40 h-40 border-4 border-white/10 rounded-full"></div>
-          <div className="absolute right-10 bottom-[-20px] w-20 h-20 bg-white/10 rounded-full"></div>
-          
-          <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-md rounded-full border-2 border-white/50 flex items-center justify-center text-2xl md:text-3xl font-bold shadow-inner relative z-10">
-            J
+        {/* Stats Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="bg-white border border-gray-100 rounded-xl p-5 flex flex-col items-center justify-center shadow-sm">
+            <span className="text-xs font-bold text-gray-500 mb-1">Meesho Credits</span>
+            <span className="text-xl font-bold text-meesho-purple">₹150.00</span>
           </div>
-          
-          <div className="flex-1 relative z-10">
-            <h2 className="text-xl md:text-2xl font-bold mb-1">Jane Doe</h2>
-            <p className="text-white/80 text-sm font-medium">+91 98765 43210</p>
+          <div className="bg-white border border-gray-100 rounded-xl p-5 flex flex-col items-center justify-center shadow-sm">
+            <span className="text-xs font-bold text-gray-500 mb-1">Total Orders</span>
+            <span className="text-xl font-bold text-meesho-purple">0</span>
           </div>
-          
-          <button className="text-white hover:bg-white/20 p-2 rounded-full transition-colors relative z-10">
-            <ChevronRight className="w-6 h-6" />
-          </button>
         </div>
 
         {/* Menu Grid */}
@@ -45,31 +37,18 @@ export default function AccountSection() {
             <button 
               key={item.id}
               onClick={() => setActiveModal(item)}
-              className="flex items-center gap-4 p-4 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 hover:border-meesho-purple/30 hover:shadow-sm transition-all text-left group"
+              className="flex items-center gap-4 p-4 border border-gray-100 rounded-xl bg-white hover:bg-gray-50 hover:border-meesho-purple/30 hover:shadow-sm transition-all text-left group shadow-sm"
             >
-              <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-lg group-hover:bg-purple-50 transition-colors">
+              <div className="text-meesho-purple opacity-80 group-hover:opacity-100 transition-opacity">
                 {item.icon}
               </div>
-              <span className="flex-1 font-semibold text-meesho-text-main text-sm md:text-base">
+              <span className={`flex-1 font-bold text-sm md:text-base ${item.id === 6 ? 'text-red-500' : 'text-[#333333]'}`}>
                 {item.title}
               </span>
-              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-meesho-purple transition-colors" />
+              <ChevronRight className={`w-4 h-4 ${item.id === 6 ? 'text-red-400' : 'text-gray-400'} group-hover:text-meesho-purple transition-colors`} />
             </button>
           ))}
         </div>
-
-        {/* Legal Links */}
-        <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col gap-4">
-          <button className="text-sm font-medium text-gray-600 text-left hover:text-meesho-purple">About Us</button>
-          <button className="text-sm font-medium text-gray-600 text-left hover:text-meesho-purple">Terms & Conditions</button>
-          <button className="text-sm font-medium text-gray-600 text-left hover:text-meesho-purple">Privacy Policy</button>
-          
-          <button className="text-sm font-bold text-meesho-pink text-left hover:text-[#d41c7b] mt-4">
-            Log Out
-          </button>
-        </div>
-        
-      </div>
 
       {/* Dynamic Modal */}
       {activeModal && (
@@ -107,6 +86,66 @@ export default function AccountSection() {
                 <h3 className="font-bold text-gray-800 mb-1">No data found</h3>
                 <p className="text-sm text-gray-500">You don't have any records here yet.</p>
                 <button onClick={() => setActiveModal(null)} className="btn-secondary mt-6 w-full">Go Back</button>
+              </div>
+            )}
+
+            {activeModal.type === "payments" && (
+              <div className="flex flex-col gap-6 overflow-y-auto max-h-[70vh] pb-6 hide-scrollbar">
+                {/* Linked UPI IDs */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+                  <h3 className="text-xs font-bold text-gray-800 tracking-wider mb-4">LINKED UPI IDS</h3>
+                  <div className="text-center text-sm text-gray-500 mb-5">
+                    No UPI IDs linked yet.
+                  </div>
+                  
+                  <div className="border border-dashed border-meesho-purple rounded-xl p-4 bg-purple-50/10">
+                    <div className="mb-3">
+                      <label className="block text-[11px] font-semibold text-gray-600 mb-1">Select App</label>
+                      <select className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-1 focus:ring-meesho-purple focus:border-meesho-purple outline-none bg-white">
+                        <option>Google Pay</option>
+                        <option>PhonePe</option>
+                        <option>Paytm</option>
+                        <option>Amazon Pay</option>
+                        <option>Other UPI App</option>
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-[11px] font-semibold text-gray-600 mb-1">UPI ID / VPA</label>
+                      <input type="text" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-1 focus:ring-meesho-purple focus:border-meesho-purple outline-none" placeholder="e.g. name@oksbi" />
+                    </div>
+                    <div className="flex gap-3">
+                      <button className="flex-1 bg-[#9f2089] text-white font-bold text-sm py-2 rounded-md hover:bg-[#861a73] transition-colors">Link UPI</button>
+                      <button className="flex-1 bg-gray-100 text-gray-600 font-bold text-sm py-2 rounded-md hover:bg-gray-200 transition-colors" onClick={(e) => { e.preventDefault(); setActiveModal(null); }}>Cancel</button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Saved Cards */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+                  <h3 className="text-xs font-bold text-gray-800 tracking-wider mb-4">SAVED CARDS</h3>
+                  <div className="text-center text-sm text-gray-500 mb-5">
+                    No saved cards yet.
+                  </div>
+                  
+                  <div className="border border-dashed border-meesho-purple rounded-xl p-4 bg-purple-50/10">
+                    <div className="mb-3">
+                      <label className="block text-[11px] font-semibold text-gray-600 mb-1">Bank Name</label>
+                      <input type="text" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-1 focus:ring-meesho-purple focus:border-meesho-purple outline-none" placeholder="e.g. HDFC Bank" />
+                    </div>
+                    <div className="mb-3">
+                      <label className="block text-[11px] font-semibold text-gray-600 mb-1">Card Number</label>
+                      <input type="text" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-1 focus:ring-meesho-purple focus:border-meesho-purple outline-none" placeholder="16-Digit Number" />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-[11px] font-semibold text-gray-600 mb-1">Card Holder Name</label>
+                      <input type="text" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-1 focus:ring-meesho-purple focus:border-meesho-purple outline-none" placeholder="Name on card" />
+                    </div>
+                    <div className="flex gap-3">
+                      <button className="flex-1 bg-[#9f2089] text-white font-bold text-sm py-2 rounded-md hover:bg-[#861a73] transition-colors">Save Card</button>
+                      <button className="flex-1 bg-gray-100 text-gray-600 font-bold text-sm py-2 rounded-md hover:bg-gray-200 transition-colors" onClick={(e) => { e.preventDefault(); setActiveModal(null); }}>Cancel</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 

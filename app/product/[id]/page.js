@@ -18,6 +18,19 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState(null);
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
+  
+  // Timer state for MEGA FLASH SALE
+  const [timeLeft, setTimeLeft] = useState(3 * 60 + 16); // 3m 16s
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const displayMin = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+  const displaySec = String(timeLeft % 60).padStart(2, '0');
 
   // Fetch reviews when product is loaded
   useEffect(() => {
@@ -156,11 +169,48 @@ export default function ProductPage() {
                   );
                 })()}
               </div>
+
+              {/* MEGA FLASH SALE */}
+              <div className="border border-dashed border-red-400 bg-red-50/50 rounded-xl p-3 mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">⚡</span>
+                  <div className="flex flex-col">
+                    <span className="text-red-500 font-bold text-sm tracking-wide">MEGA FLASH SALE</span>
+                    <span className="text-gray-500 text-[11px] font-medium">Ending very soon!</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="flex flex-col items-center">
+                    <div className="bg-red-500 text-white font-bold text-sm px-2 py-1 rounded">{displayMin}</div>
+                    <span className="text-red-500 text-[9px] font-bold mt-0.5">MIN</span>
+                  </div>
+                  <span className="text-red-500 font-bold mb-3">:</span>
+                  <div className="flex flex-col items-center">
+                    <div className="bg-red-500 text-white font-bold text-sm px-2 py-1 rounded">{displaySec}</div>
+                    <span className="text-red-500 text-[9px] font-bold mt-0.5">SEC</span>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex items-center gap-3">
                 <div className="bg-meesho-purple text-white px-2.5 py-1 rounded-full flex items-center gap-1 text-sm font-bold shadow-sm">
                   {product.rating} <StarIcon filled className="w-4 h-4" />
                 </div>
-                <span className="text-sm font-medium text-gray-500">{product.reviewsCount || product.reviews} Ratings</span>
+                <span className="text-sm font-medium text-gray-500">({product.reviewsCount || product.reviews} Ratings)</span>
+              </div>
+
+              {/* SPECIAL OFFER */}
+              <div className="border border-dashed border-meesho-purple/40 bg-purple-50/30 rounded-xl p-3 mt-4 mb-4">
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🎁</span>
+                    <span className="text-meesho-purple font-bold text-xs uppercase tracking-wide">SPECIAL OFFER: Buy More, Save More!</span>
+                  </div>
+                  <ul className="text-[11px] text-gray-600 space-y-1 ml-8 list-disc marker:text-meesho-purple">
+                    <li><span className="font-bold text-meesho-purple">Buy 2 Get 1 FREE:</span> Add any 3 products to cart, and the cheapest one will be automatically 100% FREE!</li>
+                    <li><span className="font-bold text-meesho-purple">Buy 3 Get 2 FREE:</span> Add any 5 products to cart, and the 2 cheapest ones will be automatically 100% FREE!</li>
+                  </ul>
+                </div>
               </div>
 
               <div className="flex items-center gap-2 mt-5 py-3 px-4 bg-gray-50 rounded-xl border border-gray-100">
