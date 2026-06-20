@@ -11,7 +11,7 @@
   --color-meesho-green: #03bb75;
   --color-meesho-green-light: #e6f7f4;
   
-  --font-sans: "Outfit", sans-serif;
+  --font-sans: "Mier Book", var(--font-nunito), Helvetica, Arial, sans-serif;
   
   --shadow-meesho-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-meesho-md: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -23,6 +23,7 @@
     @apply font-sans bg-[#f6f7fb] text-meesho-text-main overflow-x-hidden;
   }
   
+
   ::-webkit-scrollbar {
     @apply w-1.5 h-1.5;
   }
@@ -105,31 +106,31 @@
   }
 
   .product-title {
-    @apply text-xs md:text-sm text-meesho-text-sub font-medium truncate group-hover:text-meesho-purple transition-colors;
+    @apply text-[13px] md:text-[15px] text-meesho-text-sub font-medium line-clamp-2 leading-tight group-hover:text-meesho-purple transition-colors;
   }
 
   .product-price-row {
-    @apply flex items-baseline gap-2;
+    @apply flex items-center gap-2 mt-1.5;
   }
 
   .product-price {
-    @apply text-base md:text-lg font-bold text-meesho-text-main;
+    @apply text-[20px] md:text-[22px] font-bold text-meesho-text-main;
   }
 
   .product-original-price {
-    @apply text-xs text-meesho-text-sub line-through decoration-gray-400;
+    @apply text-[13px] text-meesho-text-sub line-through decoration-gray-400 font-medium;
   }
 
   .product-offer {
-    @apply inline-block self-start px-2 py-0.5 mt-0.5 bg-green-50 text-meesho-green border border-green-100 rounded-md text-[10px] font-bold tracking-wide uppercase;
+    @apply inline-block px-1.5 py-0.5 bg-green-50 text-meesho-green rounded text-[11px] font-bold tracking-wide;
   }
 
   .product-rating-row {
-    @apply flex items-center gap-2 mt-auto pt-2;
+    @apply flex items-center gap-2 mt-2 pt-1;
   }
 
   .rating-badge {
-    @apply flex items-center gap-1 px-1.5 py-0.5 bg-gradient-to-r from-meesho-green to-emerald-400 text-white rounded-full text-[10px] font-bold shadow-sm;
+    @apply flex items-center gap-1 px-2 py-0.5 bg-meesho-green text-white rounded-full text-[12px] font-bold shadow-sm;
   }
 
   /* Buttons */
@@ -198,3 +199,4 @@
     100% { transform: scale(1); }
   }
 }
+

@@ -20,13 +20,26 @@ export default function Header() {
   return (
     <header className="header-wrapper">
       <div className="content-wrapper header-inner">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between w-full md:w-auto">
           <button
             onClick={() => handleTabChange("home")}
             className="logo-text focus:outline-none"
+            style={{ fontFamily: '"Mier Book", var(--font-nunito), Helvetica, Arial, sans-serif' }}
           >
             Meesho
           </button>
+
+          {/* Mobile Header Icons */}
+          <div className="flex md:hidden items-center gap-4">
+            <button className="icon-btn" onClick={() => handleTabChange("wishlist")}>
+              <HeartIcon className="w-6 h-6" />
+              {wishlist.size > 0 && <span className="badge">{wishlist.size}</span>}
+            </button>
+            <button className="icon-btn" onClick={() => setIsCartOpen(true)}>
+              <CartIcon className="w-6 h-6" />
+              {totalCartItems > 0 && <span className="badge">{totalCartItems}</span>}
+            </button>
+          </div>
         </div>
 
         <div className="search-container">
@@ -59,13 +72,7 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Header Icons */}
-        <div className="flex md:hidden items-center gap-4">
-          <button className="icon-btn" onClick={() => setIsCartOpen(true)}>
-            <CartIcon className="w-6 h-6" />
-            {totalCartItems > 0 && <span className="badge">{totalCartItems}</span>}
-          </button>
-        </div>
+
       </div>
     </header>
   );

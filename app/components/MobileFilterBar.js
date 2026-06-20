@@ -41,7 +41,7 @@ export default function MobileFilterBar() {
   return (
     <>
       {/* Mobile Filter Bar (Sticky) */}
-      <div className="md:hidden sticky top-[132px] z-30 grid grid-cols-2 bg-white border-y border-gray-200">
+      <div className="md:hidden sticky top-[108px] z-30 grid grid-cols-2 bg-white border-y border-gray-200 -mx-4">
         <button 
           className="flex items-center justify-center gap-2 py-3 text-[13px] font-medium text-meesho-text-main border-r border-gray-200"
           onClick={() => setIsMobileSortOpen(true)}
