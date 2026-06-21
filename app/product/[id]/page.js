@@ -217,11 +217,10 @@ export default function ProductPage() {
               <span
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`flex items-center justify-center min-w-[50px] h-[34px] px-3 rounded-[20px] text-[14px] font-bold cursor-pointer transition-all ${
-                  selectedSize === size
+                className={`flex items-center justify-center min-w-[50px] h-[34px] px-3 rounded-[20px] text-[14px] font-bold cursor-pointer transition-all ${selectedSize === size
                     ? "text-[#9f2089] border border-[#9f2089] bg-white"
                     : "text-[#333333] border border-[#333333] bg-white"
-                }`}
+                  }`}
               >
                 {size}
               </span>
@@ -242,9 +241,9 @@ export default function ProductPage() {
             <li>Easy 7 days returns</li>
             <li>This item is only returnable and not exchangeable</li>
           </ul>
-          
+
           <p><span className="underline">SPECIFICATIONS</span></p>
-          
+
           <div className="space-y-4 pt-1">
             <div><span className="underline">Fabric</span>: Exclusive 100% Pure American Crepe ethnic Kurti for Women conveys a statement of luxury with comfort with its easy-to-carry 100% pure American Crepe fabric.</div>
             <div><span className="underline">Features</span>: Digital Printed and embroidery work. Disigner And multicolored Kurta. Our Kurta's Design is Very attractive. new different Style And Multicolor Kurti, making it a captivating style statement.</div>
@@ -259,7 +258,7 @@ export default function ProductPage() {
       <div className="w-full bg-white max-w-[600px] mx-auto mt-2 pt-4">
         <div className="px-4 border-b border-gray-200 pb-4">
           <h6 className="text-[17px] font-bold text-[#333333] mb-6">Product Ratings & Reviews</h6>
-          
+
           {/* Rating Summary Map */}
           <div className="flex gap-4">
             <div className="flex flex-col pr-4 justify-center">
@@ -310,50 +309,51 @@ export default function ProductPage() {
         <div className="px-4">
           {reviews.length > 0 ? (
             reviews.map((review, idx) => {
-              const reviewDate = review.createdAt 
+              const reviewDate = review.createdAt
                 ? new Date(review.createdAt).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
                 : "Posted recently";
-                
+
               return (
-              <div key={review._id || idx} className="py-5 border-b border-gray-100 last:border-0">
-                <div className="flex items-center gap-2 mb-3">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#e5e5e5" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="#D3DCE6"/>
-                  </svg>
-                  <span className="text-[13px] text-gray-600 font-medium">{review.name || review.userName || "Customer"}</span>
-                </div>
-                
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="bg-[#038D63] text-white px-2 py-[2px] rounded-full flex items-center gap-1 text-[11px] font-bold">
-                    {review.rating || 5}
-                    <svg width="8" height="8" viewBox="0 0 20 20" fill="white" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z" fill="white"></path>
+                <div key={review._id || idx} className="py-5 border-b border-gray-100 last:border-0">
+                  <div className="flex items-center gap-2 mb-3">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#e5e5e5" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="#D3DCE6" />
                     </svg>
+                    <span className="text-[13px] text-gray-600 font-medium">{review.name || review.userName || "Customer"}</span>
                   </div>
-                  <span className="text-[12px] text-gray-500">{reviewDate}</span>
-                </div>
 
-                <p className="text-[14px] text-[#333333] mb-3">{review.comment}</p>
-                
-                <div className="flex gap-2 mb-4 overflow-x-auto hide-scrollbar">
-                  {/* Map actual review images if they exist, else show just 1 placeholder */}
-                  {review.images && review.images.length > 0 ? (
-                    review.images.map((img, i) => (
-                      <img key={i} src={img} alt="Review Image" className="w-[60px] h-[60px] object-cover flex-shrink-0 rounded" />
-                    ))
-                  ) : (
-                    <img src={product.image} alt="Review Image" className="w-[60px] h-[60px] object-cover flex-shrink-0 rounded" />
-                  )}
-                </div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="bg-[#038D63] text-white px-2 py-[2px] rounded-full flex items-center gap-1 text-[11px] font-bold">
+                      {review.rating || 5}
+                      <svg width="8" height="8" viewBox="0 0 20 20" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.5399 6.85L13.6199 5.5L10.5099 0.29C10.3999 0.11 10.2099 0 9.99993 0C9.78993 0 9.59993 0.11 9.48993 0.29L6.37993 5.5L0.45993 6.85C0.25993 6.9 0.0899297 7.05 0.0299297 7.25C-0.0300703 7.45 0.00992969 7.67 0.14993 7.83L4.13993 12.4L3.58993 18.44C3.56993 18.65 3.65993 18.85 3.82993 18.98C3.99993 19.1 4.21993 19.13 4.41993 19.05L9.99993 16.64L15.5799 19.03C15.6599 19.06 15.7399 19.08 15.8099 19.08C15.8099 19.08 15.8099 19.08 15.8199 19.08C16.1199 19.09 16.4199 18.82 16.4199 18.48C16.4199 18.42 16.4099 18.36 16.3899 18.31L15.8499 12.38L19.8399 7.81C19.9799 7.65 20.0199 7.43 19.9599 7.23C19.9099 7.04 19.7399 6.89 19.5399 6.85Z" fill="white"></path>
+                      </svg>
+                    </div>
+                    <span className="text-[12px] text-gray-500">{reviewDate}</span>
+                  </div>
 
-                <div className="flex items-center gap-1.5 text-gray-500">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
-                  </svg>
-                  <span className="text-[12px]">Helpful (883)</span>
+                  <p className="text-[14px] text-[#333333] mb-3">{review.comment}</p>
+
+                  <div className="flex gap-2 mb-4 overflow-x-auto hide-scrollbar">
+                    {/* Map actual review images if they exist, else show just 1 placeholder */}
+                    {review.images && review.images.length > 0 ? (
+                      review.images.map((img, i) => (
+                        <img key={i} src={img} alt="Review Image" className="w-[60px] h-[60px] object-cover flex-shrink-0 rounded" />
+                      ))
+                    ) : (
+                      <img src={product.image} alt="Review Image" className="w-[60px] h-[60px] object-cover flex-shrink-0 rounded" />
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-gray-500">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z" />
+                    </svg>
+                    <span className="text-[12px]">Helpful (883)</span>
+                  </div>
                 </div>
-              </div>
-            )})
+              )
+            })
           ) : (
             <div className="py-4 text-gray-500 text-sm">No reviews found.</div>
           )}

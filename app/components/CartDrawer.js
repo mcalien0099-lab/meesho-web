@@ -5,14 +5,14 @@ import { useAppContext } from "../context/AppContext";
 import { CloseIcon } from "./Icons";
 
 export default function CartDrawer() {
-  const { 
-    isCartOpen, 
-    setIsCartOpen, 
-    cart, 
-    updateCartQty, 
-    removeFromCart, 
+  const {
+    isCartOpen,
+    setIsCartOpen,
+    cart,
+    updateCartQty,
+    removeFromCart,
     cartTotal,
-    cartOriginalTotal 
+    cartOriginalTotal
   } = useAppContext();
 
   if (!isCartOpen) return null;
@@ -22,18 +22,18 @@ export default function CartDrawer() {
 
   return (
     <>
-      <div 
-        className="modal-overlay" 
-        style={{ animationDuration: '0.3s' }} 
+      <div
+        className="modal-overlay"
+        style={{ animationDuration: '0.3s' }}
         onClick={() => setIsCartOpen(false)}
       />
-      
+
       <div className="cart-drawer pb-[env(safe-area-inset-bottom)]">
         <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-white">
           <h2 className="text-xl font-bold text-meesho-text-main">
             My Cart {totalItems > 0 && <span className="text-meesho-purple text-base font-medium">({totalItems})</span>}
           </h2>
-          <button 
+          <button
             onClick={() => setIsCartOpen(false)}
             className="p-2 -mr-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
           >
@@ -51,7 +51,7 @@ export default function CartDrawer() {
               </div>
               <h3 className="text-lg font-bold text-meesho-text-main mb-2">Your cart is empty</h3>
               <p className="text-gray-500 mb-6">Looks like you haven't added anything to your cart yet.</p>
-              <button 
+              <button
                 onClick={() => setIsCartOpen(false)}
                 className="btn-primary w-full max-w-[200px]"
               >
@@ -72,34 +72,34 @@ export default function CartDrawer() {
                   <div className="w-20 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                     <img src={item.image} alt={item.title} className="w-full h-full object-cover object-top" />
                   </div>
-                  
+
                   <div className="flex-1 flex flex-col">
-                    <h4 className="text-sm font-medium text-meesho-text-sub truncate mb-1">{item.title}</h4>
+                    <h4 className="text-sm font-medium text-meesho-text-sub truncate mb-1">{item.title || item.name}</h4>
                     <div className="flex items-baseline gap-2 mb-2">
                       <span className="font-bold text-meesho-text-main">₹{item.price}</span>
                       <span className="text-xs text-gray-400 line-through">₹{item.originalPrice}</span>
                     </div>
-                    
+
                     <div className="text-xs text-gray-500 mb-auto">
                       Size: <span className="font-semibold text-gray-700">{item.size}</span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between mt-3">
                       <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden h-8">
-                        <button 
+                        <button
                           onClick={() => updateCartQty(item.id || item._id, item.size, item.qty - 1)}
                           className="w-8 h-full flex items-center justify-center bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
                         >-</button>
                         <span className="w-8 h-full flex items-center justify-center text-sm font-medium border-x border-gray-300">
                           {item.qty}
                         </span>
-                        <button 
+                        <button
                           onClick={() => updateCartQty(item.id || item._id, item.size, item.qty + 1)}
                           className="w-8 h-full flex items-center justify-center bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
                         >+</button>
                       </div>
-                      
-                      <button 
+
+                      <button
                         onClick={() => removeFromCart(item.id || item._id, item.size)}
                         className="text-xs font-bold text-gray-400 hover:text-red-500 transition-colors uppercase tracking-wider"
                       >
@@ -134,7 +134,7 @@ export default function CartDrawer() {
                 <span>₹{cartTotal}</span>
               </div>
             </div>
-            
+
             <button className="btn-primary w-full text-lg py-3.5">
               Proceed to Checkout
             </button>

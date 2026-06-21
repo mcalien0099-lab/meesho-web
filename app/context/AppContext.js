@@ -58,6 +58,7 @@ export function AppProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [banners, setBanners] = useState([]);
+  const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Filters state
@@ -75,10 +76,11 @@ export function AppProvider({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsRes, categoriesRes, bannersRes] = await Promise.all([
+        const [productsRes, categoriesRes, bannersRes, settingsRes] = await Promise.all([
           fetch("https://meesho-backend-vert.vercel.app/api/products"),
           fetch("https://meesho-backend-vert.vercel.app/api/categories"),
           fetch("https://meesho-backend-vert.vercel.app/api/banners"),
+          fetch("https://meesho-backend-vert.vercel.app/api/settings"),
         ]);
         
         if (productsRes.ok) {
@@ -101,6 +103,11 @@ export function AppProvider({ children }) {
           const resJson = await bannersRes.json();
           const bData = resJson.data || resJson.banners || resJson;
           setBanners(Array.isArray(bData) ? bData : []);
+        }
+        if (settingsRes.ok) {
+          const resJson = await settingsRes.json();
+          const sData = resJson.data || resJson.settings || resJson;
+          setSettings(sData);
         }
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -267,9 +274,20 @@ export function AppProvider({ children }) {
         products,
         categories,
         banners,
+        settings,
         loading,
       }}
     >
+      {settings && (
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            :root {
+              --color-meesho-purple: ${settings.primaryColor};
+              --color-meesho-pink: ${settings.accentColor};
+            }
+          `
+        }} />
+      )}
       {children}
     </AppContext.Provider>
   );
