@@ -49,6 +49,7 @@ export default function AccountSection() {
             </button>
           ))}
         </div>
+      </div>
 
       {/* Dynamic Modal */}
       {activeModal && (
