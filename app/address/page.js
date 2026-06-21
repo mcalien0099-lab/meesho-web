@@ -15,7 +15,7 @@ const INDIAN_STATES = [
 ];
 
 const InputField = ({ label, name, value, placeholder, type = "text", onChange, error }) => (
-  <div className="relative mb-2.5 w-full">
+  <div className="relative mb-2 w-full">
     <label className={`absolute -top-2.5 left-3 bg-white px-1 text-[12px] font-bold z-10 ${error ? 'text-red-500' : 'text-gray-500'}`}>
       {label}
     </label>
@@ -71,7 +71,7 @@ export default function AddressPage() {
   return (
     <div className="h-screen bg-[#EAEAF2] flex flex-col overflow-hidden">
       <div className="bg-white shrink-0">
-        <div className="flex items-center px-4 py-3 border-b border-gray-100">
+        <div className="flex items-center px-4 py-1.5 border-b border-gray-100">
           <button onClick={() => router.back()} className="mr-3">
             <svg width="25" height="25" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13.7461 2.31408C13.5687 2.113 13.3277 2 13.0765 2C12.8252 2 12.5843 2.113 12.4068 2.31408L6.27783 9.24294C5.90739 9.66174 5.90739 10.3382 6.27783 10.757L12.4068 17.6859C12.7773 18.1047 13.3757 18.1047 13.7461 17.6859C14.1166 17.2671 14.0511 16.5166 13.7461 16.1718L8.29154 9.99462L13.7461 3.82817C13.9684 3.57691 14.1071 2.72213 13.7461 2.31408Z" fill="#666666"></path>
@@ -83,15 +83,15 @@ export default function AddressPage() {
 
       <div className="max-w-[800px] mx-auto bg-white relative shadow-sm flex-grow flex flex-col overflow-hidden w-full">
         <CheckoutStepper currentStep={2} />
-        <div className="bg-[#EAEAF2] h-2 w-full shrink-0"></div>
+        <div className="bg-[#EAEAF2] h-1 w-full shrink-0"></div>
 
-        <div className="px-4 py-2 flex flex-col flex-grow overflow-y-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5472d3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <div className="px-4 pt-2 pb-0 flex flex-col flex-grow overflow-y-auto">
+          <div className="flex items-center gap-2 mb-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5472d3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3" fill="#5472d3"></circle>
             </svg>
-            <h2 className="text-[16px] font-bold text-[#333333]">Address</h2>
+            <h2 className="text-[15px] font-bold text-[#333333]">Address</h2>
           </div>
 
           <InputField label="Full Name" name="name" value={formData.name} onChange={handleChange} error={showErrors && !formData.name} />
@@ -103,7 +103,7 @@ export default function AddressPage() {
               <InputField label="City" name="city" value={formData.city} onChange={handleChange} error={showErrors && !formData.city} />
             </div>
             <div className="flex-1">
-              <div className="relative mb-2.5 w-full">
+              <div className="relative mb-2 w-full">
                 <label className={`absolute -top-2.5 left-3 bg-white px-1 text-[12px] font-bold z-10 ${showErrors && !formData.state ? 'text-red-500' : 'text-gray-500'}`}>
                   State
                 </label>
@@ -140,7 +140,7 @@ export default function AddressPage() {
 
         {/* Bottom Bar matching screenshot */}
         <div className="max-w-[800px] w-full bg-[#f8f8fb] border-t border-gray-200 shrink-0 mt-auto">
-          <div className="px-4 py-2 border-b border-gray-200 flex justify-center gap-6 opacity-70">
+          <div className="px-4 py-1.5 border-b border-gray-200 flex justify-center gap-6 opacity-70">
             <div className="flex items-center gap-1">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
               <div className="flex flex-col">
@@ -163,12 +163,12 @@ export default function AddressPage() {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center px-4 pt-1 pb-1 text-[11px] text-gray-500">
+          <div className="flex justify-between items-center px-4 pt-0.5 pb-0.5 text-[11px] text-gray-500">
             <span>T&C | Privacy | e950df29</span>
             <span className="flex items-center gap-1">Powered By <span className="text-[#f7a200] font-bold tracking-tight text-[12px] italic">GoKwik</span></span>
           </div>
-          <div className="p-2.5 bg-white">
-            <button onClick={handleSave} className="w-full bg-meesho-purple text-white py-3 rounded font-bold text-[15px]">
+          <div className="p-2 bg-white">
+            <button onClick={handleSave} className="w-full bg-meesho-purple text-white py-2.5 rounded font-bold text-[15px]">
               Save Address and Continue
             </button>
           </div>
