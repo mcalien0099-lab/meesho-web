@@ -9,24 +9,30 @@ export default function ProductGrid() {
 
   return (
     <div className="flex-1 w-full">
-      <div className="bg-white px-4 py-3 md:px-0 md:py-0 md:bg-transparent md:mb-4 flex items-center justify-between sticky top-[132px] md:static z-20 md:z-auto border-b md:border-none border-gray-100">
+      <div className="bg-white px-4 py-3 md:px-0 md:py-0 md:bg-transparent md:mb-4 flex items-center border-b md:border-none border-gray-100">
         <h2 className="text-lg md:text-2xl font-bold text-meesho-text-main">
           {searchQuery ? `Search Results for "${searchQuery}"` : "Products For You"}
         </h2>
-        <span className="text-sm text-gray-500 font-medium">
-          {filteredProducts.length} Products
-        </span>
       </div>
 
       {filteredProducts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-white rounded-lg border border-gray-100 min-h-[300px]">
-          <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-            <span className="text-3xl">🔍</span>
-          </div>
-          <h3 className="text-xl font-bold text-meesho-text-main mb-2">No Products Found</h3>
-          <p className="text-gray-500 text-sm max-w-sm">
-            We couldn't find any products matching your search or filters. Try adjusting them to see more results.
-          </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[1px] md:gap-4 bg-gray-200 md:bg-transparent">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="bg-white rounded-lg md:rounded-xl overflow-hidden border border-gray-200">
+              <div className="relative w-full pt-[130%] bg-gray-100 animate-pulse"></div>
+              <div className="flex flex-col p-2.5">
+                <div className="h-4 bg-gray-100 rounded w-[90%] mb-1 animate-pulse"></div>
+                <div className="h-4 bg-gray-100 rounded w-[60%] mb-3 animate-pulse"></div>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="h-6 bg-gray-100 rounded w-16 animate-pulse"></div>
+                  <div className="h-4 bg-gray-100 rounded w-10 animate-pulse"></div>
+                </div>
+                <div className="h-5 bg-green-50 rounded w-24 mb-1 animate-pulse"></div>
+                <div className="h-5 bg-green-50 rounded w-20 mb-2 animate-pulse"></div>
+                <div className="h-4 bg-gray-100 rounded w-16 mt-1 animate-pulse"></div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[1px] md:gap-4 bg-gray-200 md:bg-transparent">
