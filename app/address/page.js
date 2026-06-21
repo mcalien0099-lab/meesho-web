@@ -69,7 +69,7 @@ export default function AddressPage() {
 
 
   return (
-    <div className="h-screen bg-[#EAEAF2] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 bg-[#EAEAF2] flex flex-col overflow-hidden">
       <div className="bg-white shrink-0">
         <div className="flex items-center px-4 py-1.5 border-b border-gray-100">
           <button onClick={() => router.back()} className="mr-3">
