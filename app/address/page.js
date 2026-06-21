@@ -14,9 +14,9 @@ const INDIAN_STATES = [
   "Uttarakhand", "West Bengal"
 ];
 
-const InputField = ({ label, name, value, placeholder, type = "text", onChange }) => (
+const InputField = ({ label, name, value, placeholder, type = "text", onChange, error }) => (
   <div className="relative mb-5 w-full">
-    <label className="absolute -top-2.5 left-3 bg-white px-1 text-[13px] text-gray-500 font-medium z-10">
+    <label className={`absolute -top-2.5 left-3 bg-white px-1 text-[13px] font-medium z-10 ${error ? 'text-red-500' : 'text-gray-500'}`}>
       {label}
     </label>
     <input 
@@ -25,8 +25,9 @@ const InputField = ({ label, name, value, placeholder, type = "text", onChange }
       value={value} 
       onChange={onChange} 
       placeholder={placeholder}
-      className="w-full border border-gray-300 rounded-xl py-3.5 px-4 focus:border-meesho-purple outline-none text-[15px] font-medium text-[#333333] relative z-0" 
+      className={`w-full border rounded-xl py-3.5 px-4 outline-none text-[15px] font-medium text-[#333333] relative z-0 ${error ? 'border-red-500 focus:border-red-500 bg-red-50/5' : 'border-gray-300 focus:border-meesho-purple'}`} 
     />
+    {error && <span className="text-red-500 text-[11px] font-bold mt-1 block pl-2 animate-pulse">This field is required</span>}
   </div>
 );
 
@@ -42,6 +43,7 @@ export default function AddressPage() {
     area: ""
   });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("address");
@@ -56,7 +58,8 @@ export default function AddressPage() {
 
   const handleSave = () => {
     if (!formData.name || !formData.phone || !formData.pincode || !formData.city || !formData.state || !formData.house || !formData.area) {
-      alert("Please fill all mandatory fields.");
+      setShowErrors(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     localStorage.setItem("address", JSON.stringify(formData));
@@ -66,8 +69,8 @@ export default function AddressPage() {
 
 
   return (
-    <div className="min-h-screen bg-[#EAEAF2]">
-      <div className="bg-white">
+    <div className="h-screen bg-[#EAEAF2] flex flex-col overflow-hidden">
+      <div className="bg-white shrink-0">
         <div className="flex items-center px-4 py-3 border-b border-gray-100">
           <button onClick={() => router.back()} className="mr-3">
             <svg width="25" height="25" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -78,11 +81,11 @@ export default function AddressPage() {
         </div>
       </div>
 
-      <div className="max-w-[800px] mx-auto bg-white relative shadow-sm min-h-[calc(100vh-50px)] flex flex-col">
+      <div className="max-w-[800px] mx-auto bg-white relative shadow-sm flex-grow flex flex-col overflow-hidden w-full">
         <CheckoutStepper currentStep={2} />
-        <div className="bg-[#EAEAF2] h-2 w-full"></div>
+        <div className="bg-[#EAEAF2] h-2 w-full shrink-0"></div>
 
-        <div className="p-5 flex flex-col pt-6">
+        <div className="p-5 flex flex-col pt-6 flex-grow overflow-y-auto">
           <div className="flex items-center gap-2 mb-6">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5472d3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -91,28 +94,29 @@ export default function AddressPage() {
             <h2 className="text-[18px] font-bold text-[#333333]">Address</h2>
           </div>
 
-          <InputField label="Full Name" name="name" value={formData.name} onChange={handleChange} />
-          <InputField label="Mobile number" name="phone" value={formData.phone} type="tel" onChange={handleChange} />
-          <InputField label="Pincode" name="pincode" value={formData.pincode} onChange={handleChange} />
+          <InputField label="Full Name" name="name" value={formData.name} onChange={handleChange} error={showErrors && !formData.name} />
+          <InputField label="Mobile number" name="phone" value={formData.phone} type="tel" onChange={handleChange} error={showErrors && !formData.phone} />
+          <InputField label="Pincode" name="pincode" value={formData.pincode} onChange={handleChange} error={showErrors && !formData.pincode} />
 
           <div className="flex gap-4">
             <div className="flex-1">
-              <InputField label="City" name="city" value={formData.city} onChange={handleChange} />
+              <InputField label="City" name="city" value={formData.city} onChange={handleChange} error={showErrors && !formData.city} />
             </div>
             <div className="flex-1">
               <div className="relative mb-5 w-full">
-                <label className="absolute -top-2.5 left-3 bg-white px-1 text-[13px] text-gray-500 font-medium z-10">
+                <label className={`absolute -top-2.5 left-3 bg-white px-1 text-[13px] font-medium z-10 ${showErrors && !formData.state ? 'text-red-500' : 'text-gray-500'}`}>
                   State
                 </label>
                 <div 
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="w-full border border-gray-300 rounded-xl py-3.5 px-4 outline-none text-[15px] font-medium text-[#333333] cursor-pointer flex justify-between items-center relative z-0 h-[50px]"
+                  className={`w-full border rounded-xl py-3.5 px-4 outline-none text-[15px] font-medium text-[#333333] cursor-pointer flex justify-between items-center relative z-0 h-[50px] ${showErrors && !formData.state ? 'border-red-500 bg-red-50/5' : 'border-gray-300'}`}
                 >
                   <span className={formData.state ? "text-[#333333]" : "text-transparent"}>{formData.state || "State"}</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}>
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
                 </div>
+                {showErrors && !formData.state && <span className="text-red-500 text-[11px] font-bold mt-1 block pl-2 animate-pulse">This field is required</span>}
                 {isDropdownOpen && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 shadow-[0_4px_20px_rgba(0,0,0,0.15)] rounded-xl z-50 max-h-[220px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     {INDIAN_STATES.map((st) => (
@@ -130,12 +134,12 @@ export default function AddressPage() {
             </div>
           </div>
 
-          <InputField label="House No., Building Name" name="house" value={formData.house} onChange={handleChange} />
-          <InputField label="Road name, Area, Colony" name="area" value={formData.area} onChange={handleChange} />
+          <InputField label="House No., Building Name" name="house" value={formData.house} onChange={handleChange} error={showErrors && !formData.house} />
+          <InputField label="Road name, Area, Colony" name="area" value={formData.area} onChange={handleChange} error={showErrors && !formData.area} />
         </div>
 
         {/* Bottom Bar matching screenshot */}
-        <div className="max-w-[800px] w-full bg-[#f8f8fb] border-t border-gray-200 mt-auto">
+        <div className="max-w-[800px] w-full bg-[#f8f8fb] border-t border-gray-200 shrink-0 mt-auto">
           <div className="px-4 py-3 border-b border-gray-200 flex justify-center gap-6 opacity-70">
             <div className="flex items-center gap-1">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>

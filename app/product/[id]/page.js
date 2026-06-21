@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppContext } from "../../context/AppContext";
 import Header from "../../components/Header";
@@ -15,6 +15,8 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState(null);
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [showSizeError, setShowSizeError] = useState(false);
+  const sizeSectionRef = useRef(null);
 
   useEffect(() => {
     if (!loading && products) {
@@ -64,21 +66,24 @@ export default function ProductPage() {
   const isWishlisted = wishlist.has(product.id || product._id);
   const originalPrice = product.originalPrice || product.price + 100;
   const discount = product.discount || (originalPrice > product.price ? Math.round(((originalPrice - product.price) / originalPrice) * 100) : 20);
+  const availableSizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL", "XXL"];
 
   const handleAddToCart = () => {
-    if (!selectedSize && product.sizes?.length > 0) {
-      alert("Please select a size first");
+    if (!selectedSize) {
+      setShowSizeError(true);
+      sizeSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    addToCart(product, selectedSize || "Standard", 1);
+    addToCart(product, selectedSize, 1);
   };
 
   const handleBuyNow = () => {
-    if (!selectedSize && product.sizes?.length > 0) {
-      alert("Please select a size first");
+    if (!selectedSize) {
+      setShowSizeError(true);
+      sizeSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
-    addToCart(product, selectedSize || "Standard", 1, true);
+    addToCart(product, selectedSize, 1, true);
   };
 
   return (
@@ -197,25 +202,39 @@ export default function ProductPage() {
       </div>
 
       {/* Select Size Block */}
-      {product.sizes && product.sizes.length > 0 && (
-        <div className="w-full bg-white max-w-[600px] mx-auto mt-2 p-4">
-          <h6 className="text-[17px] font-bold text-[#333333] mb-4">Select Size</h6>
-          <div className="flex flex-wrap gap-3">
-            {product.sizes.map((size) => (
-              <span
-                key={size}
-                onClick={() => setSelectedSize(size)}
-                className={`flex items-center justify-center min-w-[50px] h-[34px] px-3 rounded-[20px] text-[14px] font-bold cursor-pointer transition-all ${selectedSize === size
-                  ? "text-meesho-purple border border-meesho-purple bg-white"
-                  : "text-[#333333] border border-[#333333] bg-white"
-                  }`}
-              >
-                {size}
-              </span>
-            ))}
+      <div ref={sizeSectionRef} className={`w-full bg-white max-w-[600px] mx-auto mt-2 p-4 transition-all duration-300 ${showSizeError ? "ring-2 ring-red-500/20 border border-red-500/30 rounded-lg" : ""}`}>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <h6 className="text-[17px] font-bold text-[#333333]">Select Size</h6>
+            {selectedSize && <span className="text-[14px] text-meesho-purple font-medium bg-[#f0f4ff] px-2 py-0.5 rounded">Selected: {selectedSize}</span>}
           </div>
+          {showSizeError && (
+            <span className="text-red-500 text-[13px] font-bold animate-pulse flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Please select a size first
+            </span>
+          )}
         </div>
-      )}
+        <div className="flex flex-wrap gap-3">
+          {availableSizes.map((size) => (
+            <span
+              key={size}
+              onClick={() => {
+                setSelectedSize(size);
+                setShowSizeError(false);
+              }}
+              className={`flex items-center justify-center min-w-[50px] h-[34px] px-3 rounded-[20px] text-[14px] font-bold cursor-pointer transition-all ${selectedSize === size
+                ? "text-meesho-purple border border-meesho-purple bg-[#f0f4ff]"
+                : "text-[#333333] border border-gray-300 bg-white"
+                }`}
+            >
+              {size}
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* Product Details Block */}
       <div className="w-full bg-white max-w-[600px] mx-auto mt-2 p-4">
