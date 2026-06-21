@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AppContext = createContext();
 
-export function AppProvider({ children }) {
+export function AppProvider({ children, initialData }) {
   const [activeTab, setActiveTab] = useState("home");
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState(new Set());
@@ -54,12 +54,12 @@ export function AppProvider({ children }) {
     }
   }, [wishlist, isLoaded]);
 
-  // Data state
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [banners, setBanners] = useState([]);
-  const [settings, setSettings] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Data state initialized from server
+  const [products, setProducts] = useState(initialData?.products || []);
+  const [categories, setCategories] = useState(initialData?.categories || []);
+  const [banners, setBanners] = useState(initialData?.banners || []);
+  const [settings, setSettings] = useState(initialData?.settings || null);
+  const [loading, setLoading] = useState(false); // No loading state needed now
 
   // Filters state
   const [filters, setFilters] = useState({
@@ -72,51 +72,7 @@ export function AppProvider({ children }) {
   // Derived state
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // Fetch data on mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [productsRes, categoriesRes, bannersRes, settingsRes] = await Promise.all([
-          fetch("https://meesho-backend-vert.vercel.app/api/products"),
-          fetch("https://meesho-backend-vert.vercel.app/api/categories"),
-          fetch("https://meesho-backend-vert.vercel.app/api/banners"),
-          fetch("https://meesho-backend-vert.vercel.app/api/settings"),
-        ]);
-        
-        if (productsRes.ok) {
-          const resJson = await productsRes.json();
-          let pData = resJson.data || resJson;
-          if (Array.isArray(pData)) {
-            // Handle case where products might be nested inside uploaded batches
-            pData = pData.flatMap(item => item.products && Array.isArray(item.products) ? item.products : item);
-          } else if (pData && pData.products) {
-            pData = pData.products;
-          }
-          setProducts(Array.isArray(pData) ? pData : []);
-        }
-        if (categoriesRes.ok) {
-          const resJson = await categoriesRes.json();
-          const cData = resJson.data || resJson.categories || resJson;
-          setCategories(Array.isArray(cData) ? cData : []);
-        }
-        if (bannersRes.ok) {
-          const resJson = await bannersRes.json();
-          const bData = resJson.data || resJson.banners || resJson;
-          setBanners(Array.isArray(bData) ? bData : []);
-        }
-        if (settingsRes.ok) {
-          const resJson = await settingsRes.json();
-          const sData = resJson.data || resJson.settings || resJson;
-          setSettings(sData);
-        }
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  // Data is fetched on server now, removing client-side useEffect
 
   // Apply filters and sorting whenever dependencies change
   useEffect(() => {
@@ -183,19 +139,21 @@ export function AppProvider({ children }) {
   }, [filters, searchQuery, products]);
 
   // Actions
-  const addToCart = (product, size = "Standard", qty = 1) => {
+  const addToCart = (product, size = "Standard", qty = 1, openDrawer = true) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id && item.size === size);
+      const existing = prev.find((item) => (item.id || item._id) === (product.id || product._id) && item.size === size);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id && item.size === size
+          (item.id || item._id) === (product.id || product._id) && item.size === size
             ? { ...item, qty: item.qty + qty }
             : item
         );
       }
       return [...prev, { ...product, size, qty }];
     });
-    setIsCartOpen(true);
+    if (openDrawer) {
+      setIsCartOpen(true);
+    }
   };
 
   const updateCartQty = (productId, size, newQty) => {
@@ -205,7 +163,7 @@ export function AppProvider({ children }) {
     }
     setCart((prev) =>
       prev.map((item) =>
-        item.id === productId && item.size === size
+        (item.id || item._id) === productId && item.size === size
           ? { ...item, qty: newQty }
           : item
       )
@@ -213,7 +171,7 @@ export function AppProvider({ children }) {
   };
 
   const removeFromCart = (productId, size) => {
-    setCart((prev) => prev.filter((item) => !(item.id === productId && item.size === size)));
+    setCart((prev) => prev.filter((item) => !((item.id || item._id) === productId && item.size === size)));
   };
 
   const cartTotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);

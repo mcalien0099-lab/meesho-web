@@ -79,8 +79,8 @@ export default function CartDrawer() {
                     <img src={item.image} alt={item.title} className="w-full h-full object-cover object-top" />
                   </div>
 
-                  <div className="flex-1 flex flex-col">
-                    <h4 className="text-sm font-medium text-meesho-text-sub truncate mb-1">{item.title || item.name}</h4>
+                  <div className="flex-1 flex flex-col min-w-0">
+                    <h4 className="text-sm font-medium text-meesho-text-sub line-clamp-2 break-words mb-1">{item.title || item.name}</h4>
                     <div className="flex items-baseline gap-2 mb-2">
                       <span className="font-bold text-meesho-text-main">₹{item.price}</span>
                       <span className="text-xs text-gray-400 line-through">₹{item.originalPrice}</span>

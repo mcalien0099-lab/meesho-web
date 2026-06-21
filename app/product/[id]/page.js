@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useAppContext } from "../../context/AppContext";
 import Header from "../../components/Header";
 import CartDrawer from "../../components/CartDrawer";
+import ProductCard from "../../components/ProductCard";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -77,8 +78,7 @@ export default function ProductPage() {
       alert("Please select a size first");
       return;
     }
-    addToCart(product, selectedSize || "Standard", 1);
-    router.push("/address");
+    addToCart(product, selectedSize || "Standard", 1, true);
   };
 
   return (
@@ -107,22 +107,11 @@ export default function ProductPage() {
               <path d="M22 9.174c0 3.724-1.87 7.227-9.67 12.38a.58.58 0 0 1-.66 0C3.87 16.401 2 12.898 2 9.174S4.59 3.67 7.26 3.66c3.22-.081 4.61 3.573 4.74 3.774.13-.201 1.52-3.855 4.74-3.774C19.41 3.669 22 5.45 22 9.174Z" fill="#ED3843"></path>
             </svg>
           </button>
-          <button className="relative flex items-center justify-center cursor-pointer">
-            <svg width="24" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25">
-              <g clipPath="url(#cart-header_svg__a)">
-                <g clipPath="url(#cart-header_svg__b)">
-                  <g clipPath="url(#cart-header_svg__c)">
-                    <path d="M6.003 5.183h15.139c.508 0 .908.49.85 1.046l-.762 7.334c-.069.62-.537 1.1-1.103 1.121l-12.074.492-2.05-9.993Z" fill="#C53EAD"></path>
-                    <path d="M11.8 21.367c.675 0 1.22-.597 1.22-1.334 0-.737-.545-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334ZM16.788 21.367c.674 0 1.22-.597 1.22-1.334 0-.737-.546-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334Z" fill="#9F2089"></path>
-                    <path d="m2.733 4.169 3.026 1.42 2.528 12.085c.127.609.615 1.036 1.181 1.036h9.615" stroke="#9F2089" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                  </g>
-                </g>
-              </g>
-              <defs>
-                <clipPath id="cart-header_svg__a"><path fill="#fff" transform="translate(2.001 1.368)" d="M0 0h20v20H0z"></path></clipPath>
-                <clipPath id="cart-header_svg__b"><path fill="#fff" transform="translate(2.001 1.368)" d="M0 0h20v20H0z"></path></clipPath>
-                <clipPath id="cart-header_svg__c"><path fill="#fff" transform="translate(2.001 3.368)" d="M0 0h20v18H0z"></path></clipPath>
-              </defs>
+          <button onClick={() => setIsCartOpen(true)} className="relative flex items-center justify-center cursor-pointer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
           </button>
         </div>
@@ -130,7 +119,7 @@ export default function ProductPage() {
 
       <div className="w-full bg-white max-w-[600px] mx-auto pb-4">
         {/* Constrained width/height image */}
-        <div className="w-full relative aspect-[4/5] max-h-[500px] bg-gray-50 flex items-center justify-center overflow-hidden">
+        <div className="w-full relative aspect-[4/5] max-h-[350px] bg-gray-50 flex items-center justify-center overflow-hidden">
           <img src={product.image} alt={product.title} className="w-full h-full object-contain" />
         </div>
 
@@ -359,24 +348,38 @@ export default function ProductPage() {
         </div>
       </div>
 
+      {/* Product Suggestions Block */}
+      <div className="w-full bg-[#f6f7fb] max-w-[600px] mx-auto mt-3 px-2 pb-6">
+        <h6 className="text-[17px] font-bold text-[#333333] mb-3 px-2">People Also Viewed</h6>
+        <div className="grid grid-cols-2 gap-3">
+          {products && products
+            .filter(p => String(p.id || p._id) !== String(product.id || product._id))
+            .slice(0, 8)
+            .map(suggestedProduct => (
+              <ProductCard key={suggestedProduct.id || suggestedProduct._id} product={suggestedProduct} />
+            ))}
+        </div>
+      </div>
+
       {/* Fixed Bottom Action Buttons */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 p-2 flex gap-2">
         <button onClick={handleAddToCart} className="flex-1 flex items-center justify-center gap-2 border border-meesho-purple text-meesho-purple bg-white rounded py-3 font-bold text-[15px]">
-          <svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.003 5.183h15.139c.508 0 .908.49.85 1.046l-.762 7.334c-.069.62-.537 1.1-1.103 1.121l-12.074.492-2.05-9.993Z" fill="var(--color-meesho-purple)" opacity="0.7"></path>
-            <path d="M11.8 21.367c.675 0 1.22-.597 1.22-1.334 0-.737-.545-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334ZM16.788 21.367c.674 0 1.22-.597 1.22-1.334 0-.737-.546-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334Z" fill="var(--color-meesho-purple)"></path>
-            <path d="m2.733 4.169 3.026 1.42 2.528 12.085c.127.609.615 1.036 1.181 1.036h9.615" stroke="var(--color-meesho-purple)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
           </svg>
           Add to Cart
         </button>
         <button onClick={handleBuyNow} className="flex-1 flex items-center justify-center gap-2 bg-meesho-purple text-white rounded py-3 font-bold text-[15px]">
-          <svg width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" clipRule="evenodd" d="M10.825 0H6.261L.175 10.368h4.565L3.175 18l10.65-10.368H9.261L13.825 0h-3z" fill="#fff"></path>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 5L14 12L6 19V5Z" fill="#fff"/>
+            <path d="M13 5L21 12L13 19V5Z" fill="#fff"/>
           </svg>
           Buy Now
         </button>
       </div>
-
+  
       <CartDrawer />
     </div>
   );

@@ -31,7 +31,7 @@ export default function CartPage() {
         </div>
       </div>
 
-      <div className="max-w-[800px] mx-auto bg-white min-h-screen relative">
+      <div className="cart-drawer">
         <CheckoutStepper currentStep={1} />
 
         <div className="bg-[#EAEAF2] h-2 w-full"></div>
@@ -50,7 +50,7 @@ export default function CartPage() {
           <>
             <div className="cart-products-list">
               {cart.map((item, index) => (
-                <div key={`${item.id}-${item.size}-${index}`} className="flex p-4 border-b-4 border-[#EAEAF2] bg-white">
+                <div key={`${item.id || item._id}-${item.size}-${index}`} className="flex p-4 border-b-4 border-[#EAEAF2] bg-white">
                   <div className="w-[80px] h-[80px] flex-shrink-0">
                     <img src={item.image} alt={item.title} className="w-full h-full object-cover rounded" />
                   </div>
@@ -59,7 +59,7 @@ export default function CartPage() {
                       <p className="text-[15px] text-[#333333] font-medium leading-tight truncate pr-4 max-w-[200px]">
                         {item.title || item.name}
                       </p>
-                      <button onClick={() => removeFromCart(item.id, item.size)}>
+                      <button onClick={() => removeFromCart(item.id || item._id, item.size)}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="3 6 5 6 21 6"></polyline>
                           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -68,7 +68,7 @@ export default function CartPage() {
                     </div>
                     <div className="mt-1">
                       <span className="text-[15px] font-bold text-[#333333]">₹{item.price}</span>
-                      {item.originalPrice && (
+                      {item.originalPrice > 0 && (
                         <span className="text-[12px] text-gray-500 line-through ml-2">₹{item.originalPrice}</span>
                       )}
                     </div>
