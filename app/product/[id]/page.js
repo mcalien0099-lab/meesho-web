@@ -130,9 +130,9 @@ export default function ProductPage() {
       </div>
 
       <div className="w-full bg-white max-w-[600px] mx-auto pb-4">
-        {/* Full width image */}
-        <div className="w-full">
-          <img src={product.image} alt={product.title} className="w-full object-cover" />
+        {/* Constrained width/height image */}
+        <div className="w-full relative aspect-[4/5] max-h-[500px] bg-gray-50 flex items-center justify-center overflow-hidden">
+          <img src={product.image} alt={product.title} className="w-full h-full object-contain" />
         </div>
 
         {/* Title & Actions */}
