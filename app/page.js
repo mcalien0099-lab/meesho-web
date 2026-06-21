@@ -39,26 +39,7 @@ export default function Home() {
               <BannerSlider />
             </div>
             <Marquee />
-            <div className="flex items-center justify-between bg-[#FFF8EE] px-4 py-3 border-b border-gray-100">
-              <div className="flex flex-col items-center gap-1">
-                <div className="flex items-center gap-2">
-                  <img src="https://images.meesho.com/images/widgets/WT14U/o3i1m.png" width="30" height="30" alt="Easy returns" />
-                  <span className="text-[12px] font-bold text-[#60014A] leading-tight w-[70px]">Easy returns & refunds</span>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <div className="flex items-center gap-2">
-                  <img src="https://images.meesho.com/images/widgets/08B3J/110r9.png" width="30" height="30" alt="Cash on delivery" />
-                  <span className="text-[12px] font-bold text-[#60014A] leading-tight w-[60px]">Cash on delivery</span>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <div className="flex items-center gap-2">
-                  <img src="https://images.meesho.com/images/widgets/SGB1T/l00w1.png" width="30" height="30" alt="Lowest price" />
-                  <span className="text-[12px] font-bold text-[#60014A] leading-tight w-[55px]">Lowest price</span>
-                </div>
-              </div>
-            </div>
+            <img src="https://images.meesho.com/images/widgets/OY6J5/xwgyl_800.webp" alt="Trust Features" className="w-full" />
             <div className="content-wrapper">
               <OfferTimer />
               <div className="flex flex-col md:flex-row gap-6 mt-2 md:mt-4 pb-10">
