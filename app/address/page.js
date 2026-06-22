@@ -56,19 +56,19 @@ export default function AddressPage() {
 
         <div className="p-4 flex flex-col gap-5">
           <div className="flex items-center gap-2 mb-2">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9F2089" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-meesho-purple)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>
             <h2 className="text-[16px] font-bold text-[#333333]">Contact Details</h2>
           </div>
 
           <div className="flex flex-col gap-4">
-            <input name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
-            <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Contact Number" className="w-full border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
+            <input name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
+            <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Contact Number" className="w-full border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
           </div>
 
           <div className="flex items-center gap-2 mb-2 mt-4">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9F2089" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-meesho-purple)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
@@ -76,19 +76,19 @@ export default function AddressPage() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <input name="house" value={formData.house} onChange={handleChange} placeholder="House no. / Building Name" className="w-full border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
-            <input name="area" value={formData.area} onChange={handleChange} placeholder="Road Name / Area / Colony" className="w-full border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
-            <input name="pincode" value={formData.pincode} onChange={handleChange} placeholder="Pincode" className="w-full border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
+            <input name="house" value={formData.house} onChange={handleChange} placeholder="House no. / Building Name" className="w-full border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
+            <input name="area" value={formData.area} onChange={handleChange} placeholder="Road Name / Area / Colony" className="w-full border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
+            <input name="pincode" value={formData.pincode} onChange={handleChange} placeholder="Pincode" className="w-full border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
             <div className="flex gap-4">
-              <input name="city" value={formData.city} onChange={handleChange} placeholder="City" className="flex-1 border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
-              <input name="state" value={formData.state} onChange={handleChange} placeholder="State" className="flex-1 border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
+              <input name="city" value={formData.city} onChange={handleChange} placeholder="City" className="flex-1 border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
+              <input name="state" value={formData.state} onChange={handleChange} placeholder="State" className="flex-1 border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
             </div>
-            <input name="landmark" value={formData.landmark} onChange={handleChange} placeholder="Nearby Famous Shop/Mall/Landmark" className="w-full border-b border-gray-300 py-2 focus:border-[#9F2089] outline-none text-[15px]" />
+            <input name="landmark" value={formData.landmark} onChange={handleChange} placeholder="Nearby Famous Shop/Mall/Landmark" className="w-full border-b border-gray-300 py-2 focus:border-meesho-purple outline-none text-[15px]" />
           </div>
         </div>
 
         <div className="fixed bottom-0 left-0 right-0 max-w-[800px] mx-auto bg-white border-t border-gray-200 z-50 p-3">
-          <button onClick={handleSave} className="w-full bg-[#9F2089] text-white py-3 rounded font-bold text-[15px]">
+          <button onClick={handleSave} className="w-full bg-meesho-purple text-white py-3 rounded font-bold text-[15px]">
             Save Address and Continue
           </button>
         </div>

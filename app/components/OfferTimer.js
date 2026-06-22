@@ -71,7 +71,7 @@ export default function OfferTimer() {
         
         <div className="flex items-center border border-[#ff8f50] bg-[#fffbf9] rounded-sm px-1.5 py-0.5 ml-1">
           <img alt="Offer clock icon" width="14" height="14" className="mr-1" src="https://images.meesho.com/images/offer-widget-group-icon/T1W36/7tepb.png" />
-          <span className="text-[#9f2089] font-medium text-[13px]">
+          <span className="text-meesho-purple font-medium text-[13px]">
             {formatNum(timeLeft.hours)}h : {formatNum(timeLeft.minutes)}m : {formatNum(timeLeft.seconds)}s
           </span>
         </div>

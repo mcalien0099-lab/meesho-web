@@ -7,7 +7,7 @@ import { useAppContext } from "../context/AppContext";
 
 export default function PaymentPage() {
   const router = useRouter();
-  const { cartTotal, cart } = useAppContext();
+  const { cartTotal, cart, settings } = useAppContext();
   const [selectedUpi, setSelectedUpi] = useState("paytm");
   
   if (cart.length === 0) {
@@ -16,7 +16,8 @@ export default function PaymentPage() {
   }
 
   const handlePay = () => {
-    alert(`Order Placed Successfully via ${selectedUpi.toUpperCase()}! (Total: ₹${cartTotal})`);
+    const upiId = settings?.upiGateway === 'razorpay' ? settings?.razorpayUpiId : settings?.upiId;
+    alert(`Order Placed Successfully via ${selectedUpi.toUpperCase()} to ${upiId}! (Total: ₹${cartTotal})`);
     router.push("/");
   };
 
@@ -76,70 +77,86 @@ export default function PaymentPage() {
             
             <div className="flex flex-col">
               {/* G Pay */}
-              <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('gpay')}>
-                <div className="flex items-center gap-4">
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'gpay' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
-                    {selectedUpi === 'gpay' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+              {settings?.showGPay && (
+                <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('gpay')}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'gpay' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
+                      {selectedUpi === 'gpay' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+                    </div>
+                    <span className="text-[15px] font-medium text-[#333]">G Pay</span>
+                    {settings?.gpayOfferText && <span className="text-[#038D63] font-bold text-[13px] ml-2">{settings.gpayOfferText}</span>}
                   </div>
-                  <span className="text-[15px] font-medium text-[#333]">G Pay</span>
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="GPay" className="w-5 h-5 object-contain" />
                 </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="GPay" className="w-5 h-5 object-contain" />
-              </div>
+              )}
               
               {/* PhonePe */}
-              <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('phonepe')}>
-                <div className="flex items-center gap-4">
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'phonepe' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
-                    {selectedUpi === 'phonepe' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+              {settings?.showPhonePe && (
+                <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('phonepe')}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'phonepe' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
+                      {selectedUpi === 'phonepe' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+                    </div>
+                    <span className="text-[15px] font-medium text-[#333]">PhonePe</span>
+                    {settings?.phonepeOfferText && <span className="text-[#038D63] font-bold text-[13px] ml-2">{settings.phonepeOfferText}</span>}
                   </div>
-                  <span className="text-[15px] font-medium text-[#333]">PhonePe</span>
-                  <span className="text-[#038D63] font-bold text-[13px] ml-2">20% Cashback in 24 hour</span>
+                  <div className="bg-[#6739b7] text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-[14px]">पे</div>
                 </div>
-                <div className="bg-[#6739b7] text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-[14px]">पे</div>
-              </div>
+              )}
 
               {/* Paytm */}
-              <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('paytm')}>
-                <div className="flex items-center gap-4">
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'paytm' ? 'border-[#1f6df5]' : 'border-gray-300'}`}>
-                    {selectedUpi === 'paytm' && <div className="w-2.5 h-2.5 rounded-full bg-[#1f6df5]"></div>}
+              {settings?.showPaytm && (
+                <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('paytm')}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'paytm' ? 'border-[#1f6df5]' : 'border-gray-300'}`}>
+                      {selectedUpi === 'paytm' && <div className="w-2.5 h-2.5 rounded-full bg-[#1f6df5]"></div>}
+                    </div>
+                    <span className="text-[15px] font-medium text-[#333]">Paytm</span>
+                    {settings?.paytmOfferText && <span className="text-[#038D63] font-bold text-[13px] ml-2">{settings.paytmOfferText}</span>}
                   </div>
-                  <span className="text-[15px] font-medium text-[#333]">Paytm</span>
+                  <div className="flex items-center">
+                    <span className="text-[#002E6E] font-black text-[13px] tracking-tighter">pay</span>
+                    <span className="text-[#00B9F5] font-black text-[13px] tracking-tighter">tm</span>
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <span className="text-[#002E6E] font-black text-[13px] tracking-tighter">pay</span>
-                  <span className="text-[#00B9F5] font-black text-[13px] tracking-tighter">tm</span>
-                </div>
-              </div>
+              )}
 
               {/* BHIM UPI */}
-              <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('bhim')}>
-                <div className="flex items-center gap-4">
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'bhim' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
-                    {selectedUpi === 'bhim' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+              {settings?.showBHIM && (
+                <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('bhim')}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'bhim' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
+                      {selectedUpi === 'bhim' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+                    </div>
+                    <span className="text-[15px] font-medium text-[#333]">BHIM UPI</span>
+                    {settings?.bhimOfferText && <span className="text-[#038D63] font-bold text-[13px] ml-2">{settings.bhimOfferText}</span>}
                   </div>
-                  <span className="text-[15px] font-medium text-[#333]">BHIM UPI</span>
+                  <div className="flex flex-col items-center italic tracking-tighter font-black">
+                    <span className="text-orange-500 text-[8px] leading-[8px] mr-2">BHIM</span>
+                    <span className="text-green-600 text-[8px] leading-[8px] ml-1">UPI</span>
+                  </div>
                 </div>
-                <div className="flex flex-col items-center italic tracking-tighter font-black">
-                  <span className="text-orange-500 text-[8px] leading-[8px] mr-2">BHIM</span>
-                  <span className="text-green-600 text-[8px] leading-[8px] ml-1">UPI</span>
-                </div>
-              </div>
+              )}
 
-              {/* WhatsApp */}
-              <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('whatsapp')}>
-                <div className="flex items-center gap-4">
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'whatsapp' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
-                    {selectedUpi === 'whatsapp' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+              {/* Amazon Pay */}
+              {settings?.showAmazonPay && (
+                <div className="flex items-center justify-between p-4 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('amazonpay')}>
+                  <div className="flex items-center gap-4">
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedUpi === 'amazonpay' ? 'border-[#3f51b5]' : 'border-gray-300'}`}>
+                      {selectedUpi === 'amazonpay' && <div className="w-2.5 h-2.5 rounded-full bg-[#3f51b5]"></div>}
+                    </div>
+                    <span className="text-[15px] font-medium text-[#333]">Amazon Pay</span>
+                    {settings?.amazonpayOfferText && <span className="text-[#038D63] font-bold text-[13px] ml-2">{settings.amazonpayOfferText}</span>}
                   </div>
-                  <span className="text-[15px] font-medium text-[#333]">WhatsApp Pay</span>
+                  <div className="font-bold italic text-[#FF9900] text-[14px]">amazon<span className="text-[#146EB4]">pay</span></div>
                 </div>
-                <div className="w-6 h-6 rounded-full bg-[#25D366] flex items-center justify-center text-white">
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                    <path d="M12.031 21.056c-1.503 0-2.969-.404-4.26-1.17l-.307-.183-3.17.831.846-3.093-.2-.317a8.91 8.91 0 01-1.37-4.757c0-4.931 4.015-8.946 8.95-8.946s8.946 4.015 8.946 8.946-4.015 8.946-8.946 8.946M12.03 2.5a9.52 9.52 0 00-9.523 9.522c0 1.905.498 3.766 1.442 5.4L2.5 22l4.67-1.226a9.516 9.516 0 004.86 1.332h.004c5.258 0 9.53-4.27 9.53-9.528A9.52 9.52 0 0012.031 2.5m5.228 13.08c-.286.804-1.636 1.543-2.28 1.62-.644.076-1.464.22-4.148-1.258-3.23-1.782-5.326-5.114-5.487-5.334-.16-.22-1.309-1.745-1.309-3.327 0-1.581.821-2.368 1.112-2.673.29-.306.634-.383.844-.383.21 0 .42.002.6.01.196.01.461-.077.72.552.268.65 1.002 2.454 1.094 2.645.091.192.152.413.015.681-.137.268-.206.436-.412.682-.206.244-.436.534-.619.711-.2.193-.41.405-.183.795.228.39 1.015 1.674 2.181 2.716 1.503 1.344 2.748 1.761 3.14 1.954.39.19.619.152.848-.114.228-.268.983-1.147 1.25-1.543.267-.397.534-.33.885-.2.35.13 2.22 1.047 2.602 1.238.381.192.633.287.725.447.091.16.091.933-.195 1.737z" />
-                  </svg>
+              )}
+              
+              {(!settings?.showGPay && !settings?.showPhonePe && !settings?.showPaytm && !settings?.showBHIM && !settings?.showAmazonPay) && (
+                <div className="text-center py-6 text-gray-500">
+                  No payment methods are currently active.
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -167,9 +184,9 @@ export default function PaymentPage() {
         <div className="fixed bottom-0 left-0 right-0 max-w-[800px] mx-auto bg-white border-t border-gray-200 z-50 p-3 flex justify-between items-center">
           <div className="flex flex-col pl-2">
             <span className="text-[18px] font-bold text-[#333333]">₹{cartTotal.toFixed(2)}</span>
-            <button className="text-[#9F2089] text-[12px] font-bold tracking-wider mt-1 text-left">VIEW PRICE DETAILS</button>
+            <button className="text-meesho-purple text-[12px] font-bold tracking-wider mt-1 text-left">VIEW PRICE DETAILS</button>
           </div>
-          <button onClick={handlePay} className="w-1/2 bg-[#9F2089] text-white py-3 rounded font-bold text-[15px]">
+          <button onClick={handlePay} className="w-1/2 bg-meesho-purple text-white py-3 rounded font-bold text-[15px]">
             PayNow
           </button>
         </div>

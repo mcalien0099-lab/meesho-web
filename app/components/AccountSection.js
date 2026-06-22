@@ -115,7 +115,7 @@ export default function AccountSection() {
                       <input type="text" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-1 focus:ring-meesho-purple focus:border-meesho-purple outline-none" placeholder="e.g. name@oksbi" />
                     </div>
                     <div className="flex gap-3">
-                      <button className="flex-1 bg-[#9f2089] text-white font-bold text-sm py-2 rounded-md hover:bg-[#861a73] transition-colors">Link UPI</button>
+                      <button className="flex-1 bg-meesho-purple text-white font-bold text-sm py-2 rounded-md hover:opacity-90 transition-colors">Link UPI</button>
                       <button className="flex-1 bg-gray-100 text-gray-600 font-bold text-sm py-2 rounded-md hover:bg-gray-200 transition-colors" onClick={(e) => { e.preventDefault(); setActiveModal(null); }}>Cancel</button>
                     </div>
                   </div>
@@ -142,7 +142,7 @@ export default function AccountSection() {
                       <input type="text" className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-1 focus:ring-meesho-purple focus:border-meesho-purple outline-none" placeholder="Name on card" />
                     </div>
                     <div className="flex gap-3">
-                      <button className="flex-1 bg-[#9f2089] text-white font-bold text-sm py-2 rounded-md hover:bg-[#861a73] transition-colors">Save Card</button>
+                      <button className="flex-1 bg-meesho-purple text-white font-bold text-sm py-2 rounded-md hover:opacity-90 transition-colors">Save Card</button>
                       <button className="flex-1 bg-gray-100 text-gray-600 font-bold text-sm py-2 rounded-md hover:bg-gray-200 transition-colors" onClick={(e) => { e.preventDefault(); setActiveModal(null); }}>Cancel</button>
                     </div>
                   </div>

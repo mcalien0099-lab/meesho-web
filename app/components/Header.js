@@ -35,7 +35,7 @@ export default function Header() {
                   <img src={settings.logoUrl} alt={settings?.logoName || "Logo"} className="h-7 object-contain max-w-[120px]" />
                 ) : (
                   <div className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-meesho-purple to-meesho-pink bg-clip-text text-transparent transition-transform hover:scale-105 lowercase">
-                    {settings?.logoName || "meesho"}
+                    {settings?.logoName || ""}
                   </div>
                 )}
               </button>

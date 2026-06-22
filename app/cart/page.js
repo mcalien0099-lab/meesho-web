@@ -43,7 +43,7 @@ export default function CartPage() {
             </svg>
             <p className="text-[20px] font-semibold text-[#1a2024] mt-12 mb-10">Your cart is feeling lonely</p>
             <Link href="/">
-              <button className="bg-[#9F2089] text-white px-6 py-3 rounded text-[16px] font-semibold">Start shopping</button>
+              <button className="bg-meesho-purple text-white px-6 py-3 rounded text-[16px] font-semibold">Start shopping</button>
             </Link>
           </div>
         ) : (
@@ -110,10 +110,10 @@ export default function CartPage() {
               <div className="flex justify-between items-center p-3">
                 <div className="flex flex-col pl-2">
                   <span className="text-[18px] font-bold text-[#333333]">₹{cartTotal.toFixed(2)}</span>
-                  <button className="text-[#9F2089] text-[12px] font-bold tracking-wider mt-1 text-left">VIEW PRICE DETAILS</button>
+                  <button className="text-meesho-purple text-[12px] font-bold tracking-wider mt-1 text-left">VIEW PRICE DETAILS</button>
                 </div>
                 <Link href="/address" className="w-1/2">
-                  <button className="w-full bg-[#9F2089] text-white py-3 rounded font-bold text-[15px]">
+                  <button className="w-full bg-meesho-purple text-white py-3 rounded font-bold text-[15px]">
                     Continue
                   </button>
                 </Link>
