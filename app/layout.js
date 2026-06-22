@@ -12,6 +12,8 @@ export const metadata = {
   description: "A premium clone of the Meesho e-commerce website.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({ children }) {
   let initialData = { products: [], categories: [], banners: [], settings: null };
   try {

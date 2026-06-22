@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function ThankYouPage() {
+function ThankYouContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("order_id") || `OD${Math.floor(Math.random() * 10000000000)}`;
@@ -79,5 +79,17 @@ export default function ThankYouPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={
+      <div className="fixed inset-0 bg-[#EAEAF2] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-meesho-purple border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <ThankYouContent />
+    </Suspense>
   );
 }
