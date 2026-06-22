@@ -4,7 +4,7 @@ export const banners = [
     title: "Mega Blockbuster Sale",
     subtitle: "Lowest prices on trending fashion — up to 80% off!",
     cta: "Shop Now",
-    gradient: "linear-gradient(135deg, #9f2089 0%, #f43397 50%, #ff6b6b 100%)",
+    gradient: "linear-gradient(135deg, var(--color-meesho-purple) 0%, var(--color-meesho-pink) 50%, #ff6b6b 100%)",
     textColor: "#fff",
   },
   {
@@ -37,14 +37,14 @@ export const banners = [
     subtitle: "Oxidised, gold-plated & more from ₹99",
     cta: "Shop Jewellery",
     gradient: "linear-gradient(135deg, #f5af19 0%, #f12711 100%)",
-    textColor: "#fff",
+    textColor: "var(--color-white)",
   },
 ];
 
 export const mallBrands = [
-  { id: 1, name: "StyleUp", initials: "SU", color: "#9f2089", discount: "Up to 60% off" },
-  { id: 2, name: "UrbanWear", initials: "UW", color: "#2c5364", discount: "Up to 50% off" },
-  { id: 3, name: "GlowFit", initials: "GF", color: "#f43397", discount: "Up to 70% off" },
+  { id: 1, name: "StyleUp", initials: "SU", color: "var(--color-meesho-purple)", discount: "Up to 60% off" },
+  { id: 2, name: "HomeEssentials", initials: "HE", color: "#03bb75", discount: "Up to 50% off" },
+  { id: 3, name: "GlowFit", initials: "GF", color: "var(--color-meesho-pink)", discount: "Up to 70% off" },
   { id: 4, name: "TrendZone", initials: "TZ", color: "#03bb75", discount: "Up to 55% off" },
   { id: 5, name: "EleganceX", initials: "EX", color: "#f5af19", discount: "Up to 65% off" },
   { id: 6, name: "CasualKing", initials: "CK", color: "#0f2027", discount: "Up to 45% off" },

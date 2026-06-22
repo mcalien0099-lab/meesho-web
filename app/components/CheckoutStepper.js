@@ -23,8 +23,8 @@ export default function CheckoutStepper({ currentStep }) {
             <div key={step.id} className="flex flex-col items-center gap-1 z-10 w-1/4">
               <div className="bg-white px-2">
                 <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-bold border-2 
-                  ${isActive ? 'border-[#5f74ee] text-[#5f74ee] bg-white' : 
-                    isPassed ? 'border-[#5f74ee] bg-[#5f74ee] text-white' : 'border-[#d4d4d4] text-[#d4d4d4] bg-white'}`}>
+                  ${isActive ? 'border-meesho-purple text-meesho-purple bg-white' : 
+                    isPassed ? 'border-meesho-purple bg-meesho-purple text-white' : 'border-[#d4d4d4] text-[#d4d4d4] bg-white'}`}>
                   {isPassed ? (
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path>

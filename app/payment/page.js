@@ -10,6 +10,7 @@ export default function PaymentPage() {
   const { cartTotal, cart, settings } = useAppContext();
   const [selectedUpi, setSelectedUpi] = useState("paytm");
   const [activeLogoIndex, setActiveLogoIndex] = useState(0);
+  const [popupMessage, setPopupMessage] = useState(null);
   
   const slideLogos = [
     <img key="paytm" src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/paytm_icon.svg" alt="Paytm" className="h-3.5 w-auto object-contain" />,
@@ -37,14 +38,46 @@ export default function PaymentPage() {
   }
 
   const handlePay = () => {
-    const upiId = settings?.upiGateway === 'razorpay' ? settings?.razorpayUpiId : settings?.upiId;
-    alert(`Order Placed Successfully via ${selectedUpi.toUpperCase()} to ${upiId}! (Total: ₹${cartTotal})`);
-    router.push("/");
+    const orderId = `OD${Math.floor(Math.random() * 10000000000)}`;
+    
+      let upiId = settings?.upiGateway === 'razorpay' ? settings?.razorpayUpiId : settings?.upiId;
+      if (!upiId) upiId = 'Paytm.s1pn290@pty';
+      
+      const storeName = settings?.logoName || "Store";
+      const tr = settings?.razorpayTr || Date.now().toString();
+      // Added tn (Transaction Note) which shows up in the app
+      const baseParams = `pa=${upiId}&pn=${storeName}&tr=${tr}&am=${cartTotal}&cu=INR&tn=${orderId}`;
+      
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      let intentUrl = `upi://pay?${baseParams}`;
+      
+      if (selectedUpi === 'phonepe' || selectedUpi === 'cod') {
+        // Omitting 'pn' and 'tr' and using scheme=upi forces PhonePe to open in P2P chat mode on Android
+        const phonepeParams = isAndroid ? `pa=${upiId}&am=${cartTotal}&cu=INR&tn=${orderId}` : baseParams;
+        intentUrl = isAndroid ? `intent://pay?${phonepeParams}#Intent;scheme=upi;package=com.phonepe.app;end` : `phonepe://pay?${baseParams}`;
+      } else if (selectedUpi === 'gpay') {
+        intentUrl = isAndroid ? `intent://pay?${baseParams}#Intent;scheme=tez;package=com.google.android.apps.nbu.paisa.user;end` : `tez://upi/pay?${baseParams}`;
+      } else if (selectedUpi === 'paytm') {
+        intentUrl = isAndroid ? `intent://pay?${baseParams}#Intent;scheme=paytmmp;package=net.one97.paytm;end` : `paytmmp://pay?${baseParams}`;
+      } else if (selectedUpi === 'bhim') {
+        intentUrl = isAndroid ? `intent://pay?${baseParams}#Intent;scheme=bhim;package=in.org.npci.upiapp;end` : `bhim://pay?${baseParams}`;
+      } else if (selectedUpi === 'whatsapp') {
+        intentUrl = isAndroid ? `intent://pay?${baseParams}#Intent;scheme=whatsapp;package=com.whatsapp;end` : `whatsapp://pay?${baseParams}`;
+      }
+
+      // Direct the window to the intent URL to open the app
+      window.location.href = intentUrl;
+      
+      setPopupMessage({
+        type: 'redirect',
+        intentUrl: intentUrl,
+        orderId: orderId
+      });
   };
 
   const RadioButton = ({ selected }) => (
-    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selected ? 'border-[#1f6df5]' : 'border-gray-300'}`}>
-      {selected && <div className="w-2.5 h-2.5 rounded-full bg-[#1f6df5]"></div>}
+    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selected ? 'border-meesho-purple' : 'border-gray-300'}`}>
+      {selected && <div className="w-2.5 h-2.5 rounded-full bg-meesho-purple"></div>}
     </div>
   );
 
@@ -86,7 +119,7 @@ export default function PaymentPage() {
                 <circle cx="9.5" cy="9.5" r="1.5" fill="white"/>
                 <circle cx="14.5" cy="14.5" r="1.5" fill="white"/>
               </svg>
-              <span className="text-[#5f74ee] font-bold text-[14px]">Pay online & get EXTRA ₹33 off</span>
+              <span className="text-meesho-purple font-bold text-[14px]">Pay online & get EXTRA ₹33 off</span>
             </div>
 
             <div className="flex items-center mb-2.5 gap-3">
@@ -97,7 +130,7 @@ export default function PaymentPage() {
             <div className="flex flex-col border border-gray-200 shadow-sm rounded-md overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2.5 cursor-pointer bg-[#eff4ff]">
                 <div className="flex items-center gap-2">
-                  <div className="bg-[#5f74ee] text-white text-[11px] font-bold px-1.5 py-0.5 rounded-sm">UPI</div>
+                  <div className="bg-meesho-purple text-white text-[11px] font-bold px-1.5 py-0.5 rounded-sm">UPI</div>
                   <div className="font-bold text-[15px] text-[#333333]">UPI(GPay/PhonePe/Paytm)</div>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -148,13 +181,27 @@ export default function PaymentPage() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('whatsapp')}>
-                  <div className="flex items-center gap-4">
-                    <RadioButton selected={selectedUpi === 'whatsapp'} />
-                    <span className="text-[14.5px] font-bold text-[#333]">WhatsApp Pay</span>
+                {settings?.showWhatsApp !== false && (
+                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('whatsapp')}>
+                    <div className="flex items-center gap-4">
+                      <RadioButton selected={selectedUpi === 'whatsapp'} />
+                      <span className="text-[14.5px] font-bold text-[#333]">WhatsApp Pay</span>
+                    </div>
+                    <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/whatspp_pay.svg" alt="WhatsApp" className="h-5 w-5 object-contain" />
                   </div>
-                  <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/whatspp_pay.svg" alt="WhatsApp" className="h-5 w-5 object-contain" />
-                </div>
+                )}
+                
+                {settings?.showCOD !== false && (
+                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('cod')}>
+                    <div className="flex items-center gap-4">
+                      <RadioButton selected={selectedUpi === 'cod'} />
+                      <span className="text-[14.5px] font-bold text-[#333]">Cash on Delivery (COD)</span>
+                    </div>
+                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-600 font-bold text-[10px]">
+                      COD
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -188,10 +235,67 @@ export default function PaymentPage() {
             <button className="text-meesho-purple text-[11px] font-bold tracking-wider mt-0.5 text-left">VIEW PRICE DETAILS</button>
           </div>
           <button onClick={handlePay} className="w-[45%] bg-meesho-purple text-white py-3 rounded-md font-bold text-[15px]">
-            PayNow
+            {selectedUpi === 'cod' ? 'Place Order' : 'PayNow'}
           </button>
         </div>
       </div>
+
+      {/* Custom Popup */}
+      {popupMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-sm overflow-hidden animate-[scaleIn_0.2s_ease-out]">
+            {popupMessage.type === 'redirect' ? (
+              <div className="p-6 text-center flex flex-col items-center">
+                <div className="w-12 h-12 border-4 border-meesho-purple border-t-transparent rounded-full animate-spin mb-4"></div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Opening UPI App...</h3>
+                <p className="text-[14px] text-gray-600 mb-6">Please complete the payment in your UPI app to place the order.</p>
+                <a href={popupMessage.intentUrl} className="bg-meesho-purple text-white px-6 py-2.5 rounded-md font-bold text-[14.5px] mb-3 w-full block shadow-sm">
+                  Click here if app didn't open
+                </a>
+                <button onClick={() => router.push(`/thank-you?order_id=${popupMessage.orderId}`)} className="text-meesho-purple font-bold text-[14.5px] border-2 border-meesho-purple px-6 py-2.5 rounded-md w-full bg-purple-50">
+                  I have completed the payment
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className={`p-4 ${popupMessage.type === 'error' ? 'bg-red-50' : 'bg-green-50'} border-b ${popupMessage.type === 'error' ? 'border-red-100' : 'border-green-100'} flex items-center justify-between`}>
+                  <div className="flex items-center gap-2">
+                    {popupMessage.type === 'error' ? (
+                      <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                    <span className={`font-bold text-[14px] ${popupMessage.type === 'error' ? 'text-red-700' : 'text-green-700'}`}>
+                      {popupMessage.type === 'error' ? 'Not Available' : 'Success'}
+                    </span>
+                  </div>
+                  {popupMessage.type === 'error' && (
+                    <button onClick={() => setPopupMessage(null)} className="text-gray-400 hover:text-gray-600">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                <div className="p-5 text-[#333333] text-[15px]">
+                  {popupMessage.text}
+                </div>
+                {popupMessage.type === 'error' && (
+                  <div className="px-4 py-3 bg-gray-50 flex justify-end">
+                    <button onClick={() => setPopupMessage(null)} className="bg-meesho-purple text-white px-6 py-2 rounded-md font-bold text-[13px]">
+                      OK
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

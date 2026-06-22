@@ -3,8 +3,28 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 // Removed static imports
 
-const AppContext = createContext();
+const AppContext = globalThis.AppContext || createContext({
+  activeTab: "home",
+  wishlist: new Set(),
+  products: [],
+  categories: [],
+  banners: [],
+  settings: null,
+  cart: [],
+  isCartOpen: false,
+  filters: {},
+  searchQuery: "",
+  filteredProducts: [],
+  isMobileFilterOpen: false,
+  isMobileSortOpen: false,
+  cartTotal: 0,
+  cartOriginalTotal: 0,
+  loading: false,
+});
 
+if (process.env.NODE_ENV !== "production") {
+  globalThis.AppContext = AppContext;
+}
 export function AppProvider({ children, initialData }) {
   const [activeTab, setActiveTab] = useState("home");
   const [cart, setCart] = useState([]);

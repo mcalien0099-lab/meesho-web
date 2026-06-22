@@ -44,18 +44,18 @@ export default function Header() {
             <div className="flex items-center gap-4 mr-2">
               <button className="relative flex items-center justify-center cursor-pointer" onClick={() => handleTabChange("wishlist")}>
                 <svg width="24" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25">
-                  <path d="M22 9.174c0 3.724-1.87 7.227-9.67 12.38a.58.58 0 0 1-.66 0C3.87 16.401 2 12.898 2 9.174S4.59 3.67 7.26 3.66c3.22-.081 4.61 3.573 4.74 3.774.13-.201 1.52-3.855 4.74-3.774C19.41 3.669 22 5.45 22 9.174Z" fill="#ED3843"></path>
+                  <path d="M22 9.174c0 3.724-1.87 7.227-9.67 12.38a.58.58 0 0 1-.66 0C3.87 16.401 2 12.898 2 9.174S4.59 3.67 7.26 3.66c3.22-.081 4.61 3.573 4.74 3.774.13-.201 1.52-3.855 4.74-3.774C19.41 3.669 22 5.45 22 9.174Z" className="fill-meesho-pink"></path>
                 </svg>
-                {wishlist.size > 0 && <span className="absolute -top-1.5 -right-2 bg-pink-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold border border-white">{wishlist.size}</span>}
+                {wishlist.size > 0 && <span className="absolute -top-1.5 -right-2 bg-meesho-pink text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold border border-white">{wishlist.size}</span>}
               </button>
               <button className="relative flex items-center justify-center cursor-pointer" onClick={() => setIsCartOpen(true)}>
                 <svg width="24" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25">
                   <g clipPath="url(#cart-header_svg__a)">
                     <g clipPath="url(#cart-header_svg__b)">
                       <g clipPath="url(#cart-header_svg__c)">
-                        <path d="M6.003 5.183h15.139c.508 0 .908.49.85 1.046l-.762 7.334c-.069.62-.537 1.1-1.103 1.121l-12.074.492-2.05-9.993Z" fill="#C53EAD"></path>
-                        <path d="M11.8 21.367c.675 0 1.22-.597 1.22-1.334 0-.737-.545-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334ZM16.788 21.367c.674 0 1.22-.597 1.22-1.334 0-.737-.546-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334Z" fill="#9F2089"></path>
-                        <path d="m2.733 4.169 3.026 1.42 2.528 12.085c.127.609.615 1.036 1.181 1.036h9.615" stroke="#9F2089" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                        <path d="M6.003 5.183h15.139c.508 0 .908.49.85 1.046l-.762 7.334c-.069.62-.537 1.1-1.103 1.121l-12.074.492-2.05-9.993Z" className="fill-meesho-pink"></path>
+                        <path d="M11.8 21.367c.675 0 1.22-.597 1.22-1.334 0-.737-.545-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334ZM16.788 21.367c.674 0 1.22-.597 1.22-1.334 0-.737-.546-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334Z" className="fill-meesho-purple"></path>
+                        <path d="m2.733 4.169 3.026 1.42 2.528 12.085c.127.609.615 1.036 1.181 1.036h9.615" className="stroke-meesho-purple" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                       </g>
                     </g>
                   </g>
@@ -71,7 +71,7 @@ export default function Header() {
                     </clipPath>
                   </defs>
                 </svg>
-                {totalCartItems > 0 && <span className="absolute -top-1.5 -right-2 bg-pink-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold border border-white">{totalCartItems}</span>}
+                {totalCartItems > 0 && <span className="absolute -top-1.5 -right-2 bg-meesho-pink text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold border border-white">{totalCartItems}</span>}
               </button>
             </div>
           </div>
