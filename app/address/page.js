@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAppContext } from "../context/AppContext";
 import CheckoutStepper from "../components/CheckoutStepper";
 
 const INDIAN_STATES = [
@@ -41,10 +42,6 @@ export default function AddressPage() {
     }
   }, [cart.length, isLoaded, router]);
 
-  if (!isLoaded || cart.length === 0) {
-    return null;
-  }
-
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -63,6 +60,10 @@ export default function AddressPage() {
       setFormData(JSON.parse(saved));
     }
   }, []);
+
+  if (!isLoaded || cart.length === 0) {
+    return null;
+  }
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -107,7 +108,7 @@ export default function AddressPage() {
           </div>
 
           <InputField label="Full Name" name="name" value={formData.name} onChange={handleChange} error={showErrors && !formData.name} />
-          <InputField label="Mobile number" name="phone" value={formData.phone} type="tel" onChange={handleChange} error={showErrors && !formData.phone} />
+          <InputField label="Mobile number" name="phone" value={formData.phone} type="text" onChange={handleChange} error={showErrors && !formData.phone} />
           <InputField label="Pincode" name="pincode" value={formData.pincode} onChange={handleChange} error={showErrors && !formData.pincode} />
 
           <div className="flex gap-4">

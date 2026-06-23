@@ -35,6 +35,17 @@ export default function PaymentPage() {
     return null;
   }
 
+  const getPaymentDiscount = () => {
+    if (selectedUpi === 'phonepe') return Number(settings?.phonepeDiscountAmount) || 0;
+    if (selectedUpi === 'gpay') return Number(settings?.gpayDiscountAmount) || 0;
+    if (selectedUpi === 'paytm') return Number(settings?.paytmDiscountAmount) || 0;
+    if (selectedUpi === 'bhim') return Number(settings?.bhimDiscountAmount) || 0;
+    if (selectedUpi === 'amazonpay') return Number(settings?.amazonpayDiscountAmount) || 0;
+    return 0;
+  };
+  const paymentDiscount = getPaymentDiscount();
+  const finalTotal = Math.max(0, cartTotal - paymentDiscount);
+
   const handlePay = () => {
     router.push(`/processing?upi=${selectedUpi}`);
   };
@@ -91,82 +102,83 @@ export default function PaymentPage() {
               <div className="h-[1px] flex-grow bg-gray-200"></div>
             </div>
 
-            <div className="flex flex-col border border-gray-200 shadow-sm rounded-md overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-2.5 cursor-pointer bg-[#eff4ff]">
-                <div className="flex items-center gap-2">
-                  <div className="bg-meesho-purple text-white text-[11px] font-bold px-1.5 py-0.5 rounded-sm">UPI</div>
-                  <div className="font-bold text-[15px] text-[#333333]">UPI(GPay/PhonePe/Paytm)</div>
-                </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </div>
-              
-              <div className="flex flex-col bg-white">
+            <div className="flex flex-col gap-3">
                 {settings?.showGPay !== false && (
-                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('gpay')}>
+                  <div className={`flex items-center justify-between px-4 py-3 border rounded-xl cursor-pointer ${selectedUpi === 'gpay' ? 'border-meesho-purple bg-purple-50/10' : 'border-gray-300'}`} onClick={() => setSelectedUpi('gpay')}>
                     <div className="flex items-center gap-4">
                       <RadioButton selected={selectedUpi === 'gpay'} />
                       <span className="text-[14.5px] font-bold text-[#333]">G Pay</span>
                       {settings?.gpayOfferText && <span className="text-[#038D63] font-bold text-[12.5px] ml-2">{settings.gpayOfferText}</span>}
                     </div>
-                    <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/gpay_icon.svg" alt="GPay" className="h-5 w-5 object-contain" />
+                    <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/gpay_icon.svg" alt="GPay" className="h-6 w-6 object-contain" />
                   </div>
                 )}
                 
                 {settings?.showPhonePe !== false && (
-                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('phonepe')}>
+                  <div className={`flex items-center justify-between px-4 py-3 border rounded-xl cursor-pointer ${selectedUpi === 'phonepe' ? 'border-meesho-purple bg-purple-50/10' : 'border-gray-300'}`} onClick={() => setSelectedUpi('phonepe')}>
                     <div className="flex items-center gap-4">
                       <RadioButton selected={selectedUpi === 'phonepe'} />
                       <span className="text-[14.5px] font-bold text-[#333]">PhonePe</span>
-                      <span className="text-[#038D63] font-bold text-[12.5px] ml-2">20% Cashback in 24 hour</span>
+                      {settings?.phonepeOfferText && <span className="text-[#038D63] font-bold text-[12.5px] ml-2">{settings.phonepeOfferText}</span>}
                     </div>
-                    <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/phonepe.svg" alt="PhonePe" className="h-6 w-6 object-contain" />
+                    <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/phonepe.svg" alt="PhonePe" className="h-7 w-7 object-contain" />
                   </div>
                 )}
 
                 {settings?.showPaytm !== false && (
-                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('paytm')}>
+                  <div className={`flex items-center justify-between px-4 py-3 border rounded-xl cursor-pointer ${selectedUpi === 'paytm' ? 'border-meesho-purple bg-purple-50/10' : 'border-gray-300'}`} onClick={() => setSelectedUpi('paytm')}>
                     <div className="flex items-center gap-4">
                       <RadioButton selected={selectedUpi === 'paytm'} />
                       <span className="text-[14.5px] font-bold text-[#333]">Paytm</span>
+                      {settings?.paytmOfferText && <span className="text-[#038D63] font-bold text-[12.5px] ml-2">{settings.paytmOfferText}</span>}
                     </div>
                     <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/paytm_icon.svg" alt="Paytm" className="h-4 w-auto object-contain" />
                   </div>
                 )}
 
                 {settings?.showBHIM !== false && (
-                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('bhim')}>
+                  <div className={`flex items-center justify-between px-4 py-3 border rounded-xl cursor-pointer ${selectedUpi === 'bhim' ? 'border-meesho-purple bg-purple-50/10' : 'border-gray-300'}`} onClick={() => setSelectedUpi('bhim')}>
                     <div className="flex items-center gap-4">
                       <RadioButton selected={selectedUpi === 'bhim'} />
                       <span className="text-[14.5px] font-bold text-[#333]">BHIM UPI</span>
+                      {settings?.bhimOfferText && <span className="text-[#038D63] font-bold text-[12.5px] ml-2">{settings.bhimOfferText}</span>}
                     </div>
                     <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/bhim_upi.svg" alt="BHIM" className="h-5 w-auto object-contain" />
                   </div>
                 )}
 
                 {settings?.showWhatsApp !== false && (
-                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('whatsapp')}>
+                  <div className={`flex items-center justify-between px-4 py-3 border rounded-xl cursor-pointer ${selectedUpi === 'whatsapp' ? 'border-meesho-purple bg-purple-50/10' : 'border-gray-300'}`} onClick={() => setSelectedUpi('whatsapp')}>
                     <div className="flex items-center gap-4">
                       <RadioButton selected={selectedUpi === 'whatsapp'} />
                       <span className="text-[14.5px] font-bold text-[#333]">WhatsApp Pay</span>
                     </div>
-                    <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/whatspp_pay.svg" alt="WhatsApp" className="h-5 w-5 object-contain" />
+                    <img src="https://mediumorchid-goshawk-165656.hostingersite.com/assets/website/images/whatspp_pay.svg" alt="WhatsApp" className="h-6 w-6 object-contain" />
                   </div>
                 )}
                 
-                {settings?.showCOD !== false && (
-                  <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 cursor-pointer" onClick={() => setSelectedUpi('cod')}>
-                    <div className="flex items-center gap-4">
-                      <RadioButton selected={selectedUpi === 'cod'} />
-                      <span className="text-[14.5px] font-bold text-[#333]">Cash on Delivery (COD)</span>
-                    </div>
-                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-600 font-bold text-[10px]">
-                      COD
+                {/* Cash on Delivery (always visible, but can be disabled) */}
+                <div 
+                  className={`flex items-center justify-between px-4 py-3 border rounded-xl ${(settings?.showCOD === false || settings?.showCOD === 'false') ? 'opacity-60 cursor-not-allowed bg-gray-50 border-gray-200' : selectedUpi === 'cod' ? 'border-meesho-purple bg-purple-50/10 cursor-pointer' : 'border-gray-300 cursor-pointer'}`} 
+                  onClick={() => {
+                    if (settings?.showCOD !== false && settings?.showCOD !== 'false') {
+                      setSelectedUpi('cod');
+                    }
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <RadioButton selected={selectedUpi === 'cod'} />
+                    <div className="flex flex-col">
+                      <span className={`text-[14.5px] font-bold ${(settings?.showCOD === false || settings?.showCOD === 'false') ? 'text-gray-500' : 'text-[#333]'}`}>Cash on Delivery (COD)</span>
+                      {(settings?.showCOD === false || settings?.showCOD === 'false') && (
+                        <span className="text-[11px] text-red-500 font-medium mt-0.5">cod is not available in your area</span>
+                      )}
                     </div>
                   </div>
-                )}
-              </div>
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full ${(settings?.showCOD === false || settings?.showCOD === 'false') ? 'bg-gray-200 text-gray-500' : 'bg-green-100 text-green-600'} font-bold text-[10px]`}>
+                    COD
+                  </div>
+                </div>
             </div>
           </div>
           
@@ -189,11 +201,18 @@ export default function PaymentPage() {
               </div>
             )}
             
+            {paymentDiscount > 0 && (
+              <div className="flex justify-between items-center py-1 text-[14px] font-bold text-[#038D63]">
+                <span>Payment Offer:</span>
+                <span>- ₹{paymentDiscount.toFixed(2)}</span>
+              </div>
+            )}
+            
             <div className="h-[1px] bg-gray-200 w-full my-2"></div>
             
             <div className="flex justify-between items-center py-1 text-[14.5px] font-bold text-[#333333]">
               <span>Order Total :</span>
-              <span>₹{cartTotal.toFixed(2)}</span>
+              <span>₹{finalTotal.toFixed(2)}</span>
             </div>
           </div>
 
@@ -202,11 +221,16 @@ export default function PaymentPage() {
 
         <div className="max-w-[800px] w-full mx-auto bg-white border-t border-gray-200 px-4 py-2.5 flex justify-between items-center shrink-0 mt-auto">
           <div className="flex flex-col">
-            <span className="text-[18px] font-bold text-[#333333]">₹{cartTotal.toFixed(2)}</span>
+            <span className="text-[18px] font-bold text-[#333333]">
+              ₹{(selectedUpi === 'cod' && Number(settings?.codAdvanceAmount) > 0) ? Math.min(Number(settings.codAdvanceAmount), finalTotal).toFixed(2) : finalTotal.toFixed(2)}
+            </span>
             <button className="text-meesho-purple text-[11px] font-bold tracking-wider mt-0.5 text-left">VIEW PRICE DETAILS</button>
+            {(selectedUpi === 'cod' && Number(settings?.codAdvanceAmount) > 0) && (
+              <span className="text-[10px] text-gray-500 mt-0.5">₹{Math.max(0, finalTotal - Number(settings.codAdvanceAmount)).toFixed(2)} Pending on Delivery</span>
+            )}
           </div>
           <button onClick={handlePay} className="w-[45%] bg-meesho-purple text-white py-3 rounded-md font-bold text-[15px]">
-            {selectedUpi === 'cod' ? 'Place Order' : 'PayNow'}
+            PayNow
           </button>
         </div>
       </div>

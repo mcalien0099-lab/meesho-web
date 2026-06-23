@@ -67,7 +67,7 @@ export default function ProductPage() {
   const isWishlisted = wishlist.has(product.id || product._id);
   const originalPrice = product.originalPrice || product.price + 100;
   const discount = product.discount || (originalPrice > product.price ? Math.round(((originalPrice - product.price) / originalPrice) * 100) : 20);
-  const availableSizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "XL", "XXL"];
+  const availableSizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL"];
 
   const idStr = String(product.id || product._id || "123");
   let hash = 0;

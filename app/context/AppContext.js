@@ -78,7 +78,36 @@ export function AppProvider({ children, initialData }) {
   const [products, setProducts] = useState(initialData?.products || []);
   const [categories, setCategories] = useState(initialData?.categories || []);
   const [banners, setBanners] = useState(initialData?.banners || []);
-  const [settings, setSettings] = useState(initialData?.settings || null);
+  
+  // Use codAdvanceAmount and Pixels from schema, with fallback to legacy offers hack
+  let initialSettings = initialData?.settings || null;
+  if (initialSettings) {
+    let codAdvanceAmount = initialSettings.codAdvanceAmount || 0;
+    let metaPixelId = initialSettings.metaPixelId || '';
+    let googleAnalyticsId = initialSettings.googleAnalyticsId || '';
+    
+    if (initialSettings.offers) {
+      const advanceOffer = initialSettings.offers.find(o => o && o.startsWith && o.startsWith('COD_ADVANCE:'));
+      if (advanceOffer && codAdvanceAmount === 0) {
+        codAdvanceAmount = Number(advanceOffer.split(':')[1]) || 0;
+      }
+      
+      const metaOffer = initialSettings.offers.find(o => o && o.startsWith && o.startsWith('PIXEL_META:'));
+      if (metaOffer && !metaPixelId) {
+        metaPixelId = metaOffer.split(':')[1] || '';
+      }
+      
+      const gaOffer = initialSettings.offers.find(o => o && o.startsWith && o.startsWith('PIXEL_GA:'));
+      if (gaOffer && !googleAnalyticsId) {
+        googleAnalyticsId = gaOffer.split(':')[1] || '';
+      }
+    }
+    
+    initialSettings.codAdvanceAmount = codAdvanceAmount;
+    initialSettings.metaPixelId = metaPixelId;
+    initialSettings.googleAnalyticsId = googleAnalyticsId;
+  }
+  const [settings, setSettings] = useState(initialSettings);
   const [loading, setLoading] = useState(false); // No loading state needed now
 
   // Filters state
