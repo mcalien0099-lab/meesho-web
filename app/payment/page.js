@@ -7,7 +7,7 @@ import { useAppContext } from "../context/AppContext";
 
 export default function PaymentPage() {
   const router = useRouter();
-  const { cartTotal, cart, settings } = useAppContext();
+  const { cartTotal, cartOriginalTotal, cartSubTotal, offerDiscount, cart, settings, isLoaded } = useAppContext();
   const [selectedUpi, setSelectedUpi] = useState("paytm");
   const [activeLogoIndex, setActiveLogoIndex] = useState(0);
   const slideLogos = [
@@ -26,12 +26,12 @@ export default function PaymentPage() {
   }, []);
 
   useEffect(() => {
-    if (cart.length === 0) {
+    if (isLoaded && cart.length === 0) {
       router.push("/");
     }
-  }, [cart.length, router]);
+  }, [cart.length, isLoaded, router]);
 
-  if (cart.length === 0) {
+  if (!isLoaded || cart.length === 0) {
     return null;
   }
 
@@ -179,8 +179,15 @@ export default function PaymentPage() {
             </div>
             <div className="flex justify-between items-center py-1 text-[14px] font-bold text-[#333333]">
               <span>Total Product Price:</span>
-              <span>₹{cartTotal.toFixed(2)}</span>
+              <span>₹{cartSubTotal.toFixed(2)}</span>
             </div>
+            
+            {offerDiscount > 0 && (
+              <div className="flex justify-between items-center py-1 text-[14px] font-bold text-[#CC5500]">
+                <span>Special Offers:</span>
+                <span>- ₹{offerDiscount.toFixed(2)}</span>
+              </div>
+            )}
             
             <div className="h-[1px] bg-gray-200 w-full my-2"></div>
             

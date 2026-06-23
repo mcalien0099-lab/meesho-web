@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { useAppContext } from "../context/AppContext";
 import { CloseIcon } from "./Icons";
 
 export default function CartDrawer() {
+  const router = useRouter();
   const {
     isCartOpen,
     setIsCartOpen,
@@ -13,13 +15,15 @@ export default function CartDrawer() {
     removeFromCart,
     cartTotal,
     cartOriginalTotal,
+    cartSubTotal,
+    offerDiscount,
     settings
   } = useAppContext();
 
   if (!isCartOpen) return null;
 
   const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
-  const totalDiscount = cartOriginalTotal - cartTotal;
+  const totalDiscount = offerDiscount;
 
   return (
     <>
@@ -43,6 +47,14 @@ export default function CartDrawer() {
         </div>
 
         <div className="flex-1 overflow-y-auto bg-gray-50 p-4 flex flex-col gap-4">
+          {totalDiscount > 0 && (
+            <div className="bg-[#e4faed] text-[#038d63] text-xs font-bold py-2 px-3 rounded text-center mb-4 flex items-center justify-center gap-1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Yay! You are saving ₹{totalDiscount} on this order
+            </div>
+          )}
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <div className="w-32 h-32 mb-6 opacity-50">
@@ -66,13 +78,6 @@ export default function CartDrawer() {
                   <img src={settings.cartBannerUrl} alt="Offer" className="w-full h-auto" />
                 </a>
               )}
-              <div className="bg-green-50 text-meesho-green text-xs font-bold p-3 rounded-lg flex items-center gap-2 border border-green-100 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                  <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
-                </svg>
-                Yay! You are saving ₹{totalDiscount} on this order
-              </div>
-
               {cart.map((item) => (
                 <div key={`${item.id || item._id}-${item.size}`} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex gap-4">
                   <div className="w-20 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
@@ -83,7 +88,7 @@ export default function CartDrawer() {
                     <h4 className="text-sm font-medium text-meesho-text-sub line-clamp-2 break-words mb-1">{item.title || item.name}</h4>
                     <div className="flex items-baseline gap-2 mb-2">
                       <span className="font-bold text-meesho-text-main">₹{item.price}</span>
-                      <span className="text-xs text-gray-400 line-through">₹{item.originalPrice}</span>
+                      <span className="text-xs text-gray-400 line-through">₹{item.originalPrice || item.price + 100}</span>
                     </div>
 
                     <div className="text-xs text-gray-500 mb-auto">
@@ -122,15 +127,18 @@ export default function CartDrawer() {
         {cart.length > 0 && (
           <div className="bg-white p-5 border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
             <h3 className="font-bold text-sm mb-3">Price Details ({totalItems} Items)</h3>
-            <div className="flex flex-col gap-2 text-sm text-gray-600 mb-4">
-              <div className="flex justify-between">
+            <div className="space-y-3 mb-4">
+              <div className="flex justify-between text-meesho-text-sub">
                 <span>Total Product Price</span>
-                <span>+ ₹{cartOriginalTotal}</span>
+                <span>+ ₹{cartSubTotal}</span>
               </div>
-              <div className="flex justify-between text-meesho-green">
-                <span>Total Discounts</span>
-                <span>- ₹{totalDiscount}</span>
-              </div>
+              
+              {offerDiscount > 0 && (
+                <div className="flex justify-between text-[#CC5500] font-bold">
+                  <span>Special Offers (Buy/Get)</span>
+                  <span>- ₹{offerDiscount}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span>Delivery Charges</span>
                 <span className="text-meesho-green">FREE</span>
@@ -144,7 +152,7 @@ export default function CartDrawer() {
             <button 
               onClick={() => {
                 setIsCartOpen(false);
-                window.location.href = "/address";
+                router.push("/address");
               }}
               className="btn-primary w-full text-lg py-3.5"
             >

@@ -20,6 +20,7 @@ import ProductCard from "./components/ProductCard";
 import CustomPopup from "./components/CustomPopup";
 import Marquee from "./components/Marquee";
 import OfferTimer from "./components/OfferTimer";
+import TrustBanner from "./components/TrustBanner";
 
 export default function Home() {
   const { activeTab, wishlist, products } = useAppContext();
@@ -39,7 +40,7 @@ export default function Home() {
               <BannerSlider />
             </div>
             <Marquee />
-            <img src="https://images.meesho.com/images/widgets/OY6J5/xwgyl_800.webp" alt="Trust Features" className="w-full" />
+            <TrustBanner />
             <div className="content-wrapper">
               <OfferTimer />
               <div className="flex flex-col md:flex-row gap-6 mt-2 md:mt-4 pb-10">

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 export default function OfferTimer() {
-  const [timeLeft, setTimeLeft] = useState({ hours: 1, minutes: 15, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 20, seconds: 0 });
 
   const [mounted, setMounted] = useState(false);
 
@@ -35,8 +35,8 @@ export default function OfferTimer() {
               seconds = 59;
             } else {
               // Reset if hit 0
-              hours = 1;
-              minutes = 15;
+              hours = 0;
+              minutes = 20;
               seconds = 0;
             }
           }
@@ -60,7 +60,7 @@ export default function OfferTimer() {
     return (
       <div className="bg-white py-4 flex items-center justify-center">
         <div className="flex items-center gap-2">
-          <span className="text-[#5585f8] font-bold text-[17px] flex items-center" style={{color: '#4e5b72'}}>
+          <span className="font-extrabold text-[17px] flex items-center" style={{color: '#4e5b72'}}>
             Meesho Daily Deals
             <span className="ml-1 mt-0.5">
               <svg width="19" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block w-[18px] h-[20px]">
@@ -74,10 +74,10 @@ export default function OfferTimer() {
             </span>
           </span>
           
-          <div className="flex items-center border border-[#ff8f50] bg-[#fffbf9] rounded-sm px-1.5 py-0.5 ml-1">
+          <div className="flex items-center border border-[#ff8f50] bg-[#fffbf9] rounded-[4px] px-1.5 py-0.5 ml-1">
             <img alt="Offer clock icon" width="14" height="14" className="mr-1" src="https://images.meesho.com/images/offer-widget-group-icon/T1W36/7tepb.png" />
-            <span className="text-meesho-purple font-medium text-[13px]">
-              01h : 15m : 00s
+            <span className="text-meesho-purple font-bold text-[13px]">
+              00h:20m:00s
             </span>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function OfferTimer() {
   return (
     <div className="bg-white py-4 flex items-center justify-center">
       <div className="flex items-center gap-2">
-        <span className="text-[#5585f8] font-bold text-[17px] flex items-center" style={{color: '#4e5b72'}}>
+        <span className="font-extrabold text-[17px] flex items-center" style={{color: '#4e5b72'}}>
           Meesho Daily Deals
           <span className="ml-1 mt-0.5">
             <svg width="19" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block w-[18px] h-[20px]">
@@ -102,10 +102,10 @@ export default function OfferTimer() {
           </span>
         </span>
         
-        <div className="flex items-center border border-[#ff8f50] bg-[#fffbf9] rounded-sm px-1.5 py-0.5 ml-1">
+        <div className="flex items-center border border-[#ff8f50] bg-[#fffbf9] rounded-[4px] px-1.5 py-0.5 ml-1">
           <img alt="Offer clock icon" width="14" height="14" className="mr-1" src="https://images.meesho.com/images/offer-widget-group-icon/T1W36/7tepb.png" />
-          <span suppressHydrationWarning className="text-meesho-purple font-medium text-[13px]">
-            {formatNum(timeLeft.hours)}h : {formatNum(timeLeft.minutes)}m : {formatNum(timeLeft.seconds)}s
+          <span suppressHydrationWarning className="text-meesho-purple font-bold text-[13px]">
+            {formatNum(timeLeft.hours)}h:{formatNum(timeLeft.minutes)}m:{formatNum(timeLeft.seconds)}s
           </span>
         </div>
       </div>

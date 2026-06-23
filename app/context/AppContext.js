@@ -194,8 +194,57 @@ export function AppProvider({ children, initialData }) {
     setCart((prev) => prev.filter((item) => !((item.id || item._id) === productId && item.size === size)));
   };
 
-  const cartTotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
-  const cartOriginalTotal = cart.reduce((acc, item) => acc + item.originalPrice * item.qty, 0);
+  const calculateTotals = () => {
+    let subTotal = 0;
+    let originalTotal = 0;
+    let items = [];
+
+    cart.forEach(item => {
+      for (let i = 0; i < item.qty; i++) {
+        items.push(item);
+      }
+      originalTotal += (item.originalPrice || item.price + 100) * item.qty;
+      subTotal += item.price * item.qty;
+    });
+
+    let discountFromOffers = 0;
+
+    if (settings?.offers && settings.offers.length > 0) {
+      let maxDiscount = 0;
+      settings.offers.forEach(offer => {
+        const match = offer.toLowerCase().match(/^b(\d+)g(\d+)$/);
+        if (match) {
+          const buy = parseInt(match[1], 10);
+          const get = parseInt(match[2], 10);
+          const required = buy + get;
+          
+          if (items.length >= required) {
+             const applicableSets = Math.floor(items.length / required);
+             const freeCount = applicableSets * get;
+             
+             const sortedItems = [...items].sort((a, b) => a.price - b.price);
+             let currentDiscount = 0;
+             for (let i = 0; i < freeCount; i++) {
+               currentDiscount += sortedItems[i].price;
+             }
+             if (currentDiscount > maxDiscount) {
+               maxDiscount = currentDiscount;
+             }
+          }
+        }
+      });
+      discountFromOffers = maxDiscount;
+    }
+
+    return {
+      cartTotal: subTotal - discountFromOffers,
+      cartOriginalTotal: originalTotal,
+      offerDiscount: discountFromOffers,
+      cartSubTotal: subTotal
+    };
+  };
+
+  const { cartTotal, cartOriginalTotal, offerDiscount, cartSubTotal } = calculateTotals();
 
   const toggleWishlist = (productId) => {
     setWishlist((prev) => {
@@ -235,6 +284,8 @@ export function AppProvider({ children, initialData }) {
         removeFromCart,
         cartTotal,
         cartOriginalTotal,
+        cartSubTotal,
+        offerDiscount,
         isCartOpen,
         setIsCartOpen,
         wishlist,
@@ -254,6 +305,7 @@ export function AppProvider({ children, initialData }) {
         banners,
         settings,
         loading,
+        isLoaded,
       }}
     >
       {settings && (

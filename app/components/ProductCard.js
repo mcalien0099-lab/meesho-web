@@ -13,6 +13,17 @@ export default function ProductCard({ product }) {
   const originalPrice = product.originalPrice || product.price + 100;
   const discount = product.discount || (originalPrice > product.price ? Math.round(((originalPrice - product.price) / originalPrice) * 100) : 20);
 
+  const idStr = String(product.id || product._id || "123");
+  let hash = 0;
+  for (let i = 0; i < idStr.length; i++) {
+    hash = ((hash << 5) - hash) + idStr.charCodeAt(i);
+    hash |= 0;
+  }
+  const variance = Math.abs(hash) + product.price;
+  const numOffers = (variance % 3) + 1;
+  const discountAmount = 15 + (variance % 35);
+  const orderNowDiscount = Math.floor(discount * 1.5) + (variance % 25);
+
   return (
     <div 
       className="group bg-white rounded-lg md:rounded-xl overflow-hidden shadow-sm border border-gray-200 cursor-pointer flex flex-col h-full"
@@ -49,14 +60,14 @@ export default function ProductCard({ product }) {
         <div className="flex flex-col gap-1 my-1">
           <div className="inline-flex items-center">
             <span className="bg-[#f0f9f4] text-[#038D63] text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
-              ₹{product.price - 20} with 2 Special Offers
+              ₹{product.price - discountAmount} with {numOffers} Special Offer{numOffers > 1 ? 's' : ''}
             </span>
           </div>
           <div className="inline-flex items-center bg-[#f0f9f4] text-[#038D63] px-1.5 py-0.5 rounded-sm w-fit">
             <svg viewBox="0 0 12 12" fill="#038D63" xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mr-1">
               <path fillRule="evenodd" clipRule="evenodd" d="M11.86 6.448a.795.795 0 0 0 .003-.895l-.726-1.051A.79.79 0 0 1 11 4.057l-.006-1.294a.764.764 0 0 0-.505-.725l-1.175-.404a.747.747 0 0 1-.365-.276L8.22.314a.718.718 0 0 0-.817-.277l-1.18.396a.7.7 0 0 1-.449 0L4.597.037a.717.717 0 0 0-.817.277l-.731 1.044a.728.728 0 0 1-.363.276l-1.177.404a.761.761 0 0 0-.503.725L1 4.057a.79.79 0 0 1-.137.445l-.726 1.05a.8.8 0 0 0 0 .896l.726 1.05A.79.79 0 0 1 1 7.943l.006 1.294c0 .33.203.622.503.725l1.177.404c.145.05.274.147.363.276l.731 1.044a.716.716 0 0 0 .817.277l1.177-.396a.701.701 0 0 1 .449 0l1.18.396c.3.101.628-.01.817-.277l.729-1.044a.747.747 0 0 1 .365-.276l1.175-.404a.764.764 0 0 0 .505-.725L11 7.943a.79.79 0 0 1 .137-.445l.723-1.05ZM8.119 3.877c-.2-.201-.526-.201-.726 0L3.876 7.392a.516.516 0 0 0 .729.727l3.514-3.515a.51.51 0 0 0 0-.727Zm-4.242 1.06a.75.75 0 1 0 1.06-1.06.75.75 0 0 0-1.06 1.06ZM8.12 8.118a.753.753 0 0 1-1.063 0 .753.753 0 0 1 0-1.06.753.753 0 0 1 1.063 0 .753.753 0 0 1 0 1.06Z"></path>
             </svg>
-            <span className="text-[10px] font-bold">₹{Math.floor(discount * 2.5)} off | Order NOW</span>
+            <span className="text-[10px] font-bold">₹{orderNowDiscount} off | Order NOW</span>
           </div>
         </div>
         

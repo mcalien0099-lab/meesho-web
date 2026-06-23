@@ -32,7 +32,19 @@ const InputField = ({ label, name, value, placeholder, type = "text", onChange, 
 );
 
 export default function AddressPage() {
+  const { cart, isLoaded } = useAppContext();
   const router = useRouter();
+
+  useEffect(() => {
+    if (isLoaded && cart.length === 0) {
+      router.push("/");
+    }
+  }, [cart.length, isLoaded, router]);
+
+  if (!isLoaded || cart.length === 0) {
+    return null;
+  }
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",

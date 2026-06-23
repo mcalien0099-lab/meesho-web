@@ -36,7 +36,7 @@ export default function CustomPopup() {
         30% CASH BACK ON ORDER OFF 298
       </h3>
       <p className="m-0 mt-1 font-bold text-xs">
-        OFFER VAILD ONLY TODAY
+        OFFER VALID ONLY TODAY
       </p>
     </div>
   );
