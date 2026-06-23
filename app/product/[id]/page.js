@@ -12,7 +12,6 @@ export default function ProductPage() {
   const { id } = useParams();
   const router = useRouter();
   const { products, addToCart, wishlist, toggleWishlist, loading, cart, setIsCartOpen, handleTabChange, settings } = useAppContext();
-  const totalCartItems = cart.reduce((acc, item) => acc + item.qty, 0);
 
   const [selectedSize, setSelectedSize] = useState(null);
   const [product, setProduct] = useState(null);
@@ -119,36 +118,17 @@ export default function ProductPage() {
           </button>
         </div>
         <div className="flex items-center gap-4 mr-2">
-          <button className="relative flex items-center justify-center cursor-pointer" onClick={() => handleTabChange("wishlist")}>
+          <button className="relative flex items-center justify-center cursor-pointer">
             <svg width="24" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25">
-              <path d="M22 9.174c0 3.724-1.87 7.227-9.67 12.38a.58.58 0 0 1-.66 0C3.87 16.401 2 12.898 2 9.174S4.59 3.67 7.26 3.66c3.22-.081 4.61 3.573 4.74 3.774.13-.201 1.52-3.855 4.74-3.774C19.41 3.669 22 5.45 22 9.174Z" className="fill-meesho-pink"></path>
+              <path d="M22 9.174c0 3.724-1.87 7.227-9.67 12.38a.58.58 0 0 1-.66 0C3.87 16.401 2 12.898 2 9.174S4.59 3.67 7.26 3.66c3.22-.081 4.61 3.573 4.74 3.774.13-.201 1.52-3.855 4.74-3.774C19.41 3.669 22 5.45 22 9.174Z" fill="#ED3843"></path>
             </svg>
-            {wishlist.size > 0 && <span className="absolute -top-1.5 -right-2 bg-meesho-pink text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold border border-white">{wishlist.size}</span>}
           </button>
           <button onClick={() => setIsCartOpen(true)} className="relative flex items-center justify-center cursor-pointer">
-            <svg width="24" height="25" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 25">
-              <g clipPath="url(#cart-header_svg__a)">
-                <g clipPath="url(#cart-header_svg__b)">
-                  <g clipPath="url(#cart-header_svg__c)">
-                    <path d="M6.003 5.183h15.139c.508 0 .908.49.85 1.046l-.762 7.334c-.069.62-.537 1.1-1.103 1.121l-12.074.492-2.05-9.993Z" className="fill-meesho-pink"></path>
-                    <path d="M11.8 21.367c.675 0 1.22-.597 1.22-1.334 0-.737-.545-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334ZM16.788 21.367c.674 0 1.22-.597 1.22-1.334 0-.737-.546-1.335-1.22-1.335-.673 0-1.22.598-1.22 1.335s.547 1.334 1.22 1.334Z" className="fill-meesho-purple"></path>
-                    <path d="m2.733 4.169 3.026 1.42 2.528 12.085c.127.609.615 1.036 1.181 1.036h9.615" className="stroke-meesho-purple" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                  </g>
-                </g>
-              </g>
-              <defs>
-                <clipPath id="cart-header_svg__a">
-                  <path fill="#fff" transform="translate(2.001 1.368)" d="M0 0h20v20H0z"></path>
-                </clipPath>
-                <clipPath id="cart-header_svg__b">
-                  <path fill="#fff" transform="translate(2.001 1.368)" d="M0 0h20v20H0z"></path>
-                </clipPath>
-                <clipPath id="cart-header_svg__c">
-                  <path fill="#fff" transform="translate(2.001 3.368)" d="M0 0h20v18H0z"></path>
-                </clipPath>
-              </defs>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
-            {totalCartItems > 0 && <span className="absolute -top-1.5 -right-2 bg-meesho-pink text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold border border-white">{totalCartItems}</span>}
           </button>
         </div>
       </div>
